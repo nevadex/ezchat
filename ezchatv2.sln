@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ezchatv2", "ezchatv2\ezchatv2.csproj", "{232DF4DD-F2AD-4325-B7AF-B496FF2985CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{232DF4DD-F2AD-4325-B7AF-B496FF2985CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{232DF4DD-F2AD-4325-B7AF-B496FF2985CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{232DF4DD-F2AD-4325-B7AF-B496FF2985CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{232DF4DD-F2AD-4325-B7AF-B496FF2985CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E37316A4-9ADE-4E30-9DC6-496F0ABC7F1F}
+	EndGlobalSection
+EndGlobal

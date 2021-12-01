@@ -1,0 +1,172 @@
+﻿@page
+<head>
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: #04d82b;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+
+        .button5 {
+            background-color: lightgray;
+            color: black;
+            border: 2px solid #555555;
+        }
+
+        .buttonTest {
+            background-color: lightgray;
+            color: black;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<div class="container">
+    <h5 id="clientList" style="font-size: 16px;">[] Online: []</h5>
+    <hr />
+</div>
+
+<div class="container" id="adminPanel" hidden>
+    <h5 style="font-size: 18px;">Admin Panel</h5>
+    <p id="admin-clientList">Online UUIDs: []</p>
+
+    <h5 style="font-size: 15px;"><br />Manage bans:</h5>
+    <p id="admin-banList">Banned UIDs: []</p>
+    <input type="button" class="buttonTest" id="admin-refreshBanlistButton" value="Refresh" style="display: inline;" />
+    <input type="button" class="buttonTest" id="admin-reconButton" value="Reconnect" style="display: inline;" />
+    <br />
+    <input type="text" id="admin-banInput" placeholder="Enter UID..." />
+    <input type="button" id="admin-banButton" value="Ban!" style="background-color: darkred; color: white; display: inline;" />
+    <br />
+    <input type="text" id="admin-unbanInput" placeholder="Enter UID..." />
+    <input type="button" id="admin-unbanButton" value="Unban!" style="background-color: darkred; color: white; display: inline;" />
+    <hr />
+</div>
+
+<div class="container">
+    <div>
+        <div class="" style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; width:100px; grid-gap:20px;">
+            <div>
+                <input type="button" class="buttonTest" id="toggleOptions" value="Show Options" />
+            </div>
+            <div style="display:none" id="ttsModeDiv">
+                <p>TTS Mode</p>
+                <label class="switch" style="display:inline-block;">
+                    <input type="checkbox" id="ttsMode">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div style="display:none" id="filterModeDiv">
+                <p>Profanity Filter</p>
+                <label class="switch" style="display:inline-block;">
+                    <input type="checkbox" id="filterMode">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div style="display:none" id="showUidsDiv">
+                <p>Show UIDs</p>
+                <label class="switch" style="display:inline-block;">
+                    <input type="checkbox" id="showUidsMode">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div style="display:none" id="showAdminDiv">
+                <p>Admin Panel</p>
+                <label class="switch" style="display:inline-block;">
+                    <input type="checkbox" id="showAdminMode">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div style="display:none" id="clearMsgDiv">
+                <input type="button" class="buttonTest" id="clearMsgList" value="Clear All Messages" />
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-2">Username</div>
+            <div class="col-4"><input type="text" id="userInput" /></div>
+        </div>
+        <div class="row">
+            <div class="col-2">Message</div>
+            <div class="col-4"><input type="text" id="messageInput" /></div>
+        </div>
+        <div class="row">&nbsp;</div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <input type="button" class="buttonTest" id="sendButton" value="Send Message" disabled/>
+            <p style="font-size:12px; color:gray;" id="conState">[Connecting...]</p>
+            <input type="button" id="loadConvo" value="Load Convo" hidden/>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr />
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-6">
+        <div id="messagesListDiv" style="display: flex; flex-direction: column;">
+            <ul id="messagesList" style="flex-grow: 1; overflow: auto;"></ul>
+        </div>
+    </div>
+</div>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
