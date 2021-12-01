@@ -5,3 +5,4 @@
 - They likely contain countless bugs and issues.
 
 I highly recommend you do **NOT** use these releases.
+They are solely for historical purposes.
