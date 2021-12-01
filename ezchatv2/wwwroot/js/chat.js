@@ -1,7 +1,5 @@
 ﻿"use strict";
 
-// GAMING
-
 // ezchat revision 5
 // made by nevadex (c) 2021
 console.log("EZchat revision 5 started");
