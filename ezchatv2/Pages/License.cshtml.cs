@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ezchatv2.Pages
 {
-    public class PrivacyModel : PageModel
+    public class LicenseModel : PageModel
     {
-        private readonly ILogger<PrivacyModel> _logger;
+        private readonly ILogger<LicenseModel> _logger;
 
-        public PrivacyModel(ILogger<PrivacyModel> logger)
+        public LicenseModel(ILogger<LicenseModel> logger)
         {
             _logger = logger;
         }

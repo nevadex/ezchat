@@ -2,6 +2,8 @@
 # Configuration File
 # Do not rename this file!
 
+# After making any changes, restart EZchat.
+
 # Basic config
 [basic]
 
@@ -30,11 +32,15 @@ useAdminAttribute = false
 [advanced]
 
 # ports to use
+# if changing ports, change in appsettings.json to reflect it for first-time users.
 ports = [80, 443]
 
 # ip address
 addr = "0.0.0.0"
 
 # file locations
+# locations based in the Application base directory
 msglog = "admin/msglog.txt"
 banlist = "admin/banlist.txt"
+
+# After making any changes, restart EZchat.
