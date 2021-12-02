@@ -6,3 +6,7 @@
 
 I highly recommend you do **NOT** use these releases.
 They are solely for historical purposes.
+
+**Please use the releases on the 
+[**Releases**](https://github.com/nevadex/ezchat/releases)
+page instead.**
