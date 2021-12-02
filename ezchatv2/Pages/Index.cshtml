@@ -1,5 +1,7 @@
 ﻿@page
+@model IndexModel
 <head>
+    <title>@ViewData["siteTitle"]</title>
     <style>
         .switch {
             position: relative;
@@ -75,12 +77,22 @@
     </style>
 </head>
 
+<div class="container" id="motd">
+    <p style="font-size: 20px; font-style: italic">@ViewData["motd"]</p>
+    <hr />
+    <script>
+        if ("@ViewData["motd"]" == "") {
+            document.getElementById("motd").style.display = "none";
+        }
+    </script>
+</div>
+
 <div class="container">
     <h5 id="clientList" style="font-size: 16px;">[] Online: []</h5>
     <hr />
 </div>
 
-<div class="container" id="adminPanel" hidden>
+<div class="container" id="adminPanel" hidden data-use_attribute="@ViewData["useAdminAttribute"]">
     <h5 style="font-size: 18px;">Admin Panel</h5>
     <p id="admin-clientList">Online UUIDs: []</p>
 

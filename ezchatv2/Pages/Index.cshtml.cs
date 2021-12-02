@@ -19,7 +19,12 @@ namespace ezchatv2.Pages
 
         public void OnGet()
         {
+            ViewData["siteName"] = ChatConfig.configTable["basic"]["siteName"];
+            ViewData["siteTitle"] = ChatConfig.configTable["basic"]["siteTitle"];
+            ViewData["motd"] = ChatConfig.configTable["basic"]["motd"];
+            ViewData["escapeLink"] = ChatConfig.configTable["basic"]["escapeLink"];
 
+            ViewData["useAdminAttribute"] = ChatConfig.configTable["admin"]["useAdminAttribute"];
         }
     }
 }

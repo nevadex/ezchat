@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using System.IO;
 
+using Tommy;
+
 namespace ezchatv2.Hubs
 {
     public class ChatHub : Hub
@@ -17,7 +19,7 @@ namespace ezchatv2.Hubs
 
             await Clients.All.SendAsync("ReceiveMessage", user, message, Context.Items["uid"]);
             Console.WriteLine("<" + user + "/" + Context.Items["uid"] + "> " + message);
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "msglog.txt");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.msglog_file);
             string text = File.ReadAllText(path) + "\n[" + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt") + "] " + Context.Items["uid"] + "/" + user + ": " + message;
             File.WriteAllText(path, text);
 
@@ -33,9 +35,9 @@ namespace ezchatv2.Hubs
         }
 
         public async Task Login(string user, string uid)
-        {
+        {   
             // check for ban
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "banlist.txt");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
             List<string> banlist = File.ReadAllText(path).Split("\n").ToList<string>();
             banlist.Remove(banlist[0]);
             System.Diagnostics.Debug.WriteLine(banlist.Count);
@@ -75,7 +77,7 @@ namespace ezchatv2.Hubs
             // usable types: ban unban banlist
             if (type == "ban")
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "banlist.txt");
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
                 string text = File.ReadAllText(path) + "\n" + message;
                 File.WriteAllText(path, text);
 
@@ -83,7 +85,7 @@ namespace ezchatv2.Hubs
             }
             else if (type == "unban")
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "banlist.txt");
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
                 List<string> banlist = File.ReadAllText(path).Split("\n").ToList<string>();
                 banlist.Remove(banlist[0]);
                 string banliststr = "ez chat v2 / ban list";
@@ -100,7 +102,7 @@ namespace ezchatv2.Hubs
             }
             else if (type == "banlist")
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "banlist.txt");
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
                 List<string> banlist = File.ReadAllText(path).Split("\n").ToList<string>();
                 banlist.Remove(banlist[0]);
                 string banliststr = "";

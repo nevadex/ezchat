@@ -5,17 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="banlist.txt" />
-    <None Remove="msglog.txt" />
+    <None Remove="admin\banlist.txt" />
+    <None Remove="admin\msglog.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="banlist.txt">
+    <Content Include="admin\banlist.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="msglog.txt">
+    <Content Include="admin\msglog.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Tommy" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="admin\config.toml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

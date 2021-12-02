@@ -1,0 +1,40 @@
+﻿# EZchat rev 6
+# Configuration File
+# Do not rename this file!
+
+# Basic config
+[basic]
+
+# name at the top of the website
+siteName = "EZchat rev 6"
+
+# name in the tab
+siteTitle = "EZchat"
+
+# message below the name, leave empty to remove
+motd = "Have a wonderful day!"
+
+# escape button link, leave empty to remove
+escapeLink = "https://google.com"
+
+# Admin stuff
+[admin]
+
+# admin uids
+adminUids = []
+
+# use ?admin=true attribute
+useAdminAttribute = false
+
+# Advanced settings, do not change unless you know what you are doing!!
+[advanced]
+
+# ports to use
+ports = [80, 443]
+
+# ip address
+addr = "0.0.0.0"
+
+# file locations
+msglog = "admin/msglog.txt"
+banlist = "admin/banlist.txt"

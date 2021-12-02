@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Tommy;
+using System.IO;
 
 namespace ezchatv2
 {
@@ -14,6 +16,13 @@ namespace ezchatv2
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("Initializing...");
+
+            StreamReader tomlreader = File.OpenText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "admin/config.toml"));
+            ChatConfig.configTable = TOML.Parse(tomlreader);
+            ChatConfig.msglog_file = ChatConfig.configTable["advanced"]["msglog"];
+            ChatConfig.banlist_file = ChatConfig.configTable["advanced"]["banlist"];
+
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -21,7 +30,15 @@ namespace ezchatv2
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>().UseUrls("http://0.0.0.0:5000", "https://0.0.0.0:5001");
+                    //webBuilder.UseStartup<Startup>().UseUrls("http://0.0.0.0:80", "https://0.0.0.0:443");
+                    webBuilder.UseStartup<Startup>().UseUrls("http://"+ChatConfig.configTable["advanced"]["addr"]+":"+ChatConfig.configTable["advanced"]["ports"][0], "https://"+ChatConfig.configTable["advanced"]["addr"]+":"+ChatConfig.configTable["advanced"]["ports"][1]);
                 });
+    }
+
+    public class ChatConfig
+    {
+        public static TomlTable configTable;
+        public static string msglog_file;
+        public static string banlist_file;
     }
 }

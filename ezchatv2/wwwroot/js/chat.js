@@ -235,11 +235,13 @@ connection.start().then(function () {
 uuid = uidCookie + "/" + userCookie;
 
 // if user has admin, it is true
-// currently checking for URLquery '?admin=true'
-var adminQuery = new URLSearchParams(window.location.search).get("admin");
-if (adminQuery == "true") {
-    isAdmin = true;
-    console.log("User has permission 'Admin'");
+if (document.getElementById("adminPanel").dataset.use_attribute == "True") {
+    // currently checking for URLquery '?admin=true'
+    var adminQuery = new URLSearchParams(window.location.search).get("admin");
+    if (adminQuery == "true") {
+        isAdmin = true;
+        console.log("User has permission 'Admin'");
+    }
 }
 
 document.getElementById("sendButton").addEventListener("click", function (event) {

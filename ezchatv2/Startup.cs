@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ezchatv2.Hubs;
 
+using System.IO;
+
 namespace ezchatv2
 {
     public class Startup
