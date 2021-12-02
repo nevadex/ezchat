@@ -22,3 +22,7 @@ EZChat can be hosted on Linux, Linux-ARM, or Windows. Depending on your OS, foll
 ## Linux 
 
 ## Linux-ARM
+
+# Help
+
+You can contact me at **Nevadex#6434** or [**nevadex@gmail.com**](mailto:nevadex@gmail.com)
