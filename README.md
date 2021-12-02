@@ -19,4 +19,6 @@ EZChat can be hosted on Linux, Linux-ARM, or Windows. Depending on your OS, foll
 
 ## Windows
 
-## Linux and Linux-ARM
+## Linux 
+
+## Linux-ARM
