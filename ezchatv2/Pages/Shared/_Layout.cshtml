@@ -20,8 +20,13 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div style="float:left">
+                <div id="escapeButton" style="float:left">
                     <input type="button" onclick="window.location.href='@ViewData["escapeLink"]';" value="ESCAPE!" style="background-color:darkred; color:white;" />
+                    <script>
+                        if ("@ViewData["escapeLink"]" == "") {
+                            document.getElementById("escapeButton").style.display = "none";
+                        }
+                    </script>
                 </div>
                 <!--<div style="float:right; display:flex; align-items:center;">
                     <p style="font-size: 20px; font-style: italic;">@ViewData["motd"]</p>
