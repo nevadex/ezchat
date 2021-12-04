@@ -4,7 +4,7 @@
 
 To keep up to date with security, please update EZchat to the most recent version on Github.
 
-Most Recent Version: **EZchat v2 - Revision 6**
+Most Recent Version: **Release: EZchat v2 - Revision 6**
 
 [Click here to see releases](https://github.com/nevadex/ezchat/releases)
 
