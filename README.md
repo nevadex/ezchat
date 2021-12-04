@@ -1,6 +1,9 @@
 # EZchat
 ### A simple, self-hosted chat website.
 ### Built on .NET Core 3.1 and SignalR
+### Designed for small groups to have an easy chat service for all use cases.
+### Can be hosted on x86, Linux, ARM, and more.
+### Can be used with Tor and FreeDNS
 
 ---
 
@@ -19,4 +22,10 @@ EZChat can be hosted on Linux, Linux-ARM, or Windows. Depending on your OS, foll
 
 ## Windows
 
-## Linux and Linux-ARM
+## Linux 
+
+## Linux-ARM
+
+# Help
+
+You can contact me at **Nevadex#6434** or [**nevadex@gmail.com**](mailto:nevadex@gmail.com)
