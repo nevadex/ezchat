@@ -1,5 +1,5 @@
 # EZchat
-### A simple, self-hosted chat website.
+### A simple, centralized, self-hosted chat website.
 ### Designed for small groups to have an easy chat service for all use cases.
 - Built on .NET Core 3.1 and SignalR
 - Can be hosted on Windows, Linux, ARM, and more.
