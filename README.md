@@ -22,9 +22,28 @@ EZChat can be hosted on Linux, Linux-ARM, or Windows. Depending on your OS, foll
 
 ## Downloads
 
+- Download the correct archive from the Releases page, corrosponding with the OS you are running.
+- Unzip the archive into a folder.
+
+## Configuration
+
+Please navigate to the wiki to see how to configure EZchat.
+[Wiki](https://github.com/nevadex/ezchat/wiki/Configuration)
+
 ## Windows (64-bit)
 
+- Open the `publish` folder
+- **Run `ezchat.exe` as Administrator**
+
 ## Linux & Linux ARM
+
+- Open the `publish` folder
+- In terminal, run `sudo chmod +x ezchat`
+- **In terminal, run `sudo ./ezchat`**
+
+---
+
+### For more information, please look in the [wiki](https://github.com/nevadex/ezchat/wiki/Configuration) before contacting me.
 
 # Help
 
