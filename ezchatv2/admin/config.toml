@@ -23,7 +23,7 @@ escapeLink = "https://google.com"
 [admin]
 
 # admin uids
-adminUids = []
+adminUids = ["admin_uid1", "admin_uid2"]
 
 # use ?admin=true attribute
 useAdminAttribute = false
