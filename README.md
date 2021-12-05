@@ -5,9 +5,7 @@
 ### Can be hosted on x86, Linux, ARM, and more.
 ### Can be used with Tor and FreeDNS
 
----
-
-For advanced users and configuration, click here.
+![ezchat demo pic](https://github.com/nevadex/ezchat/blob/master/repo/ezchat_rev6_.png?raw=true)
 
 ---
 
