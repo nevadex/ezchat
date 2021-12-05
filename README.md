@@ -9,6 +9,19 @@
 
 ---
 
+# Features
+
+- Simple messaging
+- Simple moderation
+- Recent message cache
+- Connection status
+- Online user list
+- TTS mode
+- Profanity filter
+- Compatibility with Tor and FreeDNS
+
+---
+
 # Quick Start Guide
 > EZChat is a **self-hosted**, **self-maintained** application. I can not monitor your actions with it, and you are responsible for your actions using EZchat.
 
