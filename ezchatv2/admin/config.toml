@@ -26,6 +26,7 @@ escapeLink = "https://google.com"
 adminUids = ["admin_uid1", "admin_uid2"]
 
 # use ?admin=true attribute
+# HUGE SECURITY PROBLEM
 useAdminAttribute = false
 
 # Advanced settings, do not change unless you know what you are doing!!
