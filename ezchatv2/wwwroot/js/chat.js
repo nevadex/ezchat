@@ -9,7 +9,6 @@ var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.Log
 
 //Disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
-//document.getElementById("userInput").focus();
 
 // initialize context variables
 var isAdmin = false;
@@ -25,24 +24,22 @@ var uidCookie;
 cookies.forEach(function (value) {
     if (value.includes("user=")) {
         userCookie = value.replace("user=", "");
-        //alert("1: " + userCookie);
     }
     else {
         //userCookie = null;
-        //alert("2: ");
+        userCookie = "user"; // default username
     }
     if (value.includes("uid=")) {
         uidCookie = value.replace("uid=", "");
-        //alert("3: " + uidCookie);
     }
     else {
         uidCookie = null;
-        //alert("4: ");
+        // uid created later
     }
 });
 
 // set user if cookie
-if (userCookie != null) {
+if (userCookie != null && userCookie != "user") {
     document.getElementById("userInput").value = userCookie;
     document.getElementById("messageInput").focus();
 }
@@ -64,7 +61,7 @@ let speech = new SpeechSynthesisUtterance();
 speech.lang = "en";
 var voices = window.speechSynthesis.getVoices();
 speech.voice = voices[4];
-//window.speechSynthesis.speak(speech);
+//window.speechSynthesis.speak(speech); // code got deprecated lmao
 
 connection.on("ReceiveMessage", function (user, message, uid) {
     var li = document.createElement("li");
