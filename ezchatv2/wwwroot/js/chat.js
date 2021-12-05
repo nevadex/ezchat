@@ -27,7 +27,6 @@ cookies.forEach(function (value) {
     }
     else {
         //userCookie = null;
-        userCookie = "user"; // default username
     }
     if (value.includes("uid=")) {
         uidCookie = value.replace("uid=", "");
@@ -39,11 +38,12 @@ cookies.forEach(function (value) {
 });
 
 // set user if cookie
-if (userCookie != null && userCookie != "user") {
+if (userCookie != null) {
     document.getElementById("userInput").value = userCookie;
     document.getElementById("messageInput").focus();
 }
 else {
+    userCookie = "user"; // default username
     document.getElementById("userInput").focus();
 }
 
@@ -220,7 +220,7 @@ connection.start().then(function () {
     document.getElementById("conState").textContent = "[Connected!]";
 
     // login to hub
-    connection.invoke("Login", document.getElementById("userInput").value, uidCookie).catch(function (err) {
+    connection.invoke("Login", userCookie, uidCookie).catch(function (err) {
         connection.stop();
         return console.error(err.toString());
     });
