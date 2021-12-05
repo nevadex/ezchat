@@ -2,8 +2,8 @@
 
 // ezchat revision 6
 // made by nevadex (c) 2021
-//console.log("EZchat revision 6 started");
-console.warn("Running rev6-dev! Expect errors or bugs!")
+console.log("EZchat revision 6 started");
+//console.warn("Running rev6-dev! Expect errors or bugs!")
 
 var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/chatHub").build();
 
