@@ -20,11 +20,11 @@ EZChat can be hosted on Linux, Linux-ARM, or Windows. Depending on your OS, foll
 
 > Some OSs may not be supported by the release builds.  *Advanced: You can rebuild the binaries to the OS or kernel you want using the RID modifier.*
 
+## Downloads
+
 ## Windows
 
-## Linux 
-
-## Linux-ARM
+## Linux & Linux ARM
 
 # Help
 
