@@ -30,12 +30,12 @@ EZChat can be hosted on Linux, Linux-ARM, or Windows. Depending on your OS, foll
 Please navigate to the wiki to see how to configure EZchat.
 [Wiki](https://github.com/nevadex/ezchat/wiki/Configuration)
 
-## Windows (64-bit)
+## Windows (win-x64)
 
 - Open the `publish` folder
 - **Run `ezchat.exe` as Administrator**
 
-## Linux & Linux ARM
+## Linux (linux-x64) & Linux ARM (linux-arm)
 
 - Open the `publish` folder
 - In terminal, run `sudo chmod +x ezchat`
