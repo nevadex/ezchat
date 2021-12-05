@@ -43,7 +43,7 @@ Please navigate to the wiki to see how to configure EZchat.
 
 ---
 
-### For more information, please look in the [wiki](https://github.com/nevadex/ezchat/wiki/Configuration) before contacting me.
+### For more information, please look in the [wiki](https://github.com/nevadex/ezchat/wiki/) before contacting me.
 
 # Help
 
