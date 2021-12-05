@@ -15,16 +15,35 @@ For advanced users and configuration, click here.
 > EZChat is a **self-hosted**, **self-maintained** application. I can not monitor your actions with it, and you are responsible for your actions using EZchat.
 
 EZchat is standalone and has no dependencies. You do not need to download anything to host an EZchat server.
-EZchat uses minimal resources and a minimal web server(Kestrel), so you do not need to worry about your specs or resources.
+EZchat uses minimal resources and a minimal web server(Kestrel/IIS Express), so you do not need to worry about your specs or resources.
 EZChat can be hosted on Linux, Linux-ARM, or Windows. Depending on your OS, follow either tutorial to start your EZchat server.
 
 > Some OSs may not be supported by the release builds.  *Advanced: You can rebuild the binaries to the OS or kernel you want using the RID modifier.*
 
-## Windows
+## Downloads
 
-## Linux 
+- Download the correct archive from the Releases page, corrosponding with the OS you are running.
+- Unzip the archive into a folder.
 
-## Linux-ARM
+## Configuration
+
+Please navigate to the wiki to see how to configure EZchat.
+[Wiki](https://github.com/nevadex/ezchat/wiki/Configuration)
+
+## Windows (win-x64)
+
+- Open the `publish` folder
+- **Run `ezchat.exe` as Administrator**
+
+## Linux (linux-x64) & Linux ARM (linux-arm)
+
+- Open the `publish` folder
+- In terminal, run `sudo chmod +x ezchat`
+- **In terminal, run `sudo ./ezchat`**
+
+---
+
+### For more information, please look in the [wiki](https://github.com/nevadex/ezchat/wiki/) before contacting me.
 
 # Help
 
