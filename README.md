@@ -1,11 +1,24 @@
 # EZchat
-### A simple, self-hosted chat website.
+### A simple, centralized, self-hosted chat website.
 ### Designed for small groups to have an easy chat service for all use cases.
 - Built on .NET Core 3.1 and SignalR
 - Can be hosted on Windows, Linux, ARM, and more.
 - Can be used with Tor and FreeDNS
 
 ![ezchat demo pic](https://github.com/nevadex/ezchat/blob/master/repo/ezchat_rev6_.png?raw=true)
+
+---
+
+# Features
+
+- Simple messaging
+- Simple moderation
+- Recent message cache
+- Connection status
+- Online user list
+- TTS mode
+- Profanity filter
+- Compatibility with Tor and FreeDNS
 
 ---
 
@@ -31,13 +44,13 @@ Please navigate to the wiki to see how to configure EZchat.
 ## Windows (win-x64)
 
 - Open the `publish` folder
-- **Run `ezchat.exe` as Administrator**
+- **Run `ezchatv2.exe` as Administrator**
 
 ## Linux (linux-x64) & Linux ARM (linux-arm)
 
 - Open the `publish` folder
-- In terminal, run `sudo chmod +x ezchat`
-- **In terminal, run `sudo ./ezchat`**
+- In terminal, run `sudo chmod +x ezchatv2`
+- **In terminal, run `sudo ./ezchatv2`**
 
 ---
 
