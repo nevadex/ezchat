@@ -15,7 +15,29 @@ namespace ezchatv2.Hubs
         {
             // check for uid
             if (!Context.Items.TryGetValue("uid", out object value))
-            { Context.Abort(); }
+            { Context.Abort(); return; }
+
+            msg x = new msg { };
+            // update name if changed
+            foreach (msg i in ppcontext.contextedUsers)
+            {
+                if (i.message == Context.ConnectionId)
+                {
+                    x = new msg {user = user, uid = i.uid, message = i.message};
+                    ppcontext.contextedUsers.Remove(i);
+                    break;
+                }
+            }
+            ppcontext.contextedUsers.Add(x);
+            // refresh clientList
+            string clientListMsg = ppcontext.ConnectedIds.Count.ToString();
+            // ¶
+            foreach (msg i in ppcontext.contextedUsers)
+            {
+                string v = " " + i.uid + "¶" + i.user;
+                clientListMsg = clientListMsg + v;
+            }
+            await Clients.All.SendAsync("ServerMsg", "clientList", clientListMsg, "SERVER");
 
             await Clients.All.SendAsync("ReceiveMessage", user, message, Context.Items["uid"]);
             Console.WriteLine("<" + user + "/" + Context.Items["uid"] + "> " + message);
@@ -55,7 +77,7 @@ namespace ezchatv2.Hubs
             //System.Diagnostics.Debug.WriteLine(Context.Items["uid"]);
 
             // add user to contexted users
-            ppcontext.contextedUsers.Add(new msg {uid = uid, user = user});
+            ppcontext.contextedUsers.Add(new msg {uid = uid, user = user, message = Context.ConnectionId});
             string clientListMsg = ppcontext.ConnectedIds.Count.ToString();
             // ¶
             foreach (msg i in ppcontext.contextedUsers)
@@ -92,6 +114,18 @@ namespace ezchatv2.Hubs
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
                 string text = File.ReadAllText(path) + "\n" + message;
                 File.WriteAllText(path, text);
+
+                string bannedConID = "";
+                // find user
+                foreach (msg i in ppcontext.contextedUsers)
+                {
+                    if (i.uid == message)
+                    {
+                        bannedConID = i.uid;
+                    }
+                }
+
+                await Clients.Client(bannedConID).SendAsync("ServerMsg", "reload", "", "SERVER");
 
                 System.Diagnostics.Debug.WriteLine(uid + " banned " + message);
             }

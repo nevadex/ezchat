@@ -1,9 +1,9 @@
 ﻿"use strict";
 
-// ezchat revision 6
+// ezchat revision 7 DEV
 // made by nevadex (c) 2021
-console.log("EZchat revision 6 started");
-//console.warn("Running rev6-dev! Expect errors or bugs!")
+//console.log("EZchat revision 6 started");
+console.warn("Running rev7-dev! Expect errors or bugs!")
 
 var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/chatHub").build();
 
@@ -155,7 +155,7 @@ connection.on("ReceiveMessage", function (user, message, uid) {
 
 // Server Messenger
 connection.on("ServerMsg", function (type, message, uid) {
-    // usable types: clientList banMsg banlist clientAdmin
+    // usable types: clientList banMsg banlist clientAdmin rtBan
 
     if (type == "clientList") {
         // message = clientCount client1uid¶client1user client2uid¶client2user ...
@@ -202,6 +202,9 @@ connection.on("ServerMsg", function (type, message, uid) {
     }
     else if (type == "clientAdmin") {
         isAdmin = true;
+    }
+    else if (type == "reload") {
+        location.reload();
     }
 });
 
