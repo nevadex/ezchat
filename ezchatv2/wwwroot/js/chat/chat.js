@@ -113,7 +113,7 @@ connection.on("ReceiveMessage", function (user, message, uid) {
 
 // Server Messenger
 connection.on("ServerMsg", function (type, message, uid) {
-    // usable types: clientList banMsg banlist clientAdmin rtBan
+    // usable types: clientList banMsg reload
 
     if (type == "clientList") {
         // message = clientCount client1uid¶client1user client2uid¶client2user ...
@@ -155,12 +155,6 @@ connection.on("ServerMsg", function (type, message, uid) {
         document.getElementById("userInput").disabled = true;
         document.getElementById("sendButton").disabled = true;
     }
-    else if (type == "banlist") {
-        document.getElementById("admin-banList").textContent = "Banned UIDs: " + message;
-    }
-    else if (type == "clientAdmin") {
-        isAdmin = true;
-    }
     else if (type == "reload") {
         location.reload();
     }
@@ -195,16 +189,6 @@ connection.start().then(function () {
 // set context/uid var
 uuid = uidCookie + "/" + userCookie;
 uid = uidCookie;
-
-// if user has admin, it is true
-if (document.getElementById("adminPanel").dataset.use_attribute == "True") {
-    // currently checking for URLquery '?admin=true'
-    var adminQuery = new URLSearchParams(window.location.search).get("admin");
-    if (adminQuery == "true") {
-        isAdmin = true;
-        console.log("User has permission 'Admin'");
-    }
-}
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
     refreshConnectionState(); // refresh
@@ -323,17 +307,6 @@ document.getElementById("showUidsMode").addEventListener("click", function (even
         for (let i = 0; i < x.length; i++) {
             x[i].textContent = x[i].textContent.replace(x[i].dataset.uid + "/" + x[i].dataset.user, x[i].dataset.user);
         }
-    }
-});
-
-// show admin mode toggle thing
-document.getElementById("showAdminMode").addEventListener("click", function (event) {
-    if (document.getElementById("showAdminMode").checked == true) {
-        document.getElementById("adminPanel").hidden = false;
-        connection.invoke("ServerMsg", "banlist", "", uuid);
-    }
-    else {
-        document.getElementById("adminPanel").hidden = true;
     }
 });
 

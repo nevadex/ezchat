@@ -99,7 +99,7 @@ namespace ezchatv2.Hubs
                 if (i == uid)
                 {
                     // ServerMsg client informing admin
-                    await Clients.Caller.SendAsync("ServerMsg", "clientAdmin", Context.Items["uid"], "SERVER");
+                    await Clients.Caller.SendAsync("AdminMsg", "clientAdmin", Context.Items["uid"], "SERVER");
                     //Context.Items.Add("admin", "true");
                     Context.Items["admin"] = "true";
                     break;
@@ -110,56 +110,10 @@ namespace ezchatv2.Hubs
         public async Task ServerMsg(string type, string message, string uid)
         {
             // server messenger
-            // usable types: ban unban banlist
-            if (type == "ban" && Context.Items["admin"].ToString() == "true")
+            // usable types: 
+            if (true)
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
-                string text = File.ReadAllText(path) + "\n" + message;
-                File.WriteAllText(path, text);
-
-                string bannedConID = "";
-                // find user
-                foreach (msg i in ppcontext.contextedUsers)
-                {
-                    if (i.uid == message)
-                    {
-                        bannedConID = i.uid;
-                    }
-                }
-
-                await Clients.Client(bannedConID).SendAsync("ServerMsg", "reload", "", "SERVER");
-
-                System.Diagnostics.Debug.WriteLine(uid + " banned " + message);
-            }
-            else if (type == "unban" && Context.Items["admin"].ToString() == "true")
-            {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
-                List<string> banlist = File.ReadAllText(path).Split("\n").ToList<string>();
-                banlist.Remove(banlist[0]);
-                string banliststr = "ez chat v2 / ban list";
-                foreach (string i in banlist)
-                {
-                    if (i != message)
-                    {
-                        banliststr += "\n" + i;
-                    }
-                }
-                File.WriteAllText(path, banliststr);
-
-                System.Diagnostics.Debug.WriteLine(uid + " unbanned " + message);
-            }
-            else if (type == "banlist")
-            {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
-                List<string> banlist = File.ReadAllText(path).Split("\n").ToList<string>();
-                banlist.Remove(banlist[0]);
-                string banliststr = "";
-                foreach (string i in banlist)
-                {
-                    banliststr += " " + i;
-                }
-                try { banliststr.Remove(0, 1); } catch { banliststr = "none"; }
-                await Clients.Caller.SendAsync("ServerMsg", "banlist", banliststr, "SERVER");
+                
             }
         }
 
@@ -167,6 +121,8 @@ namespace ezchatv2.Hubs
         {
             // verify if user is admin
             if (Context.Items["admin"].ToString() == "true" && Context.Items["uid"].ToString() == uid)
+            { }
+            else if (ChatConfig.configTable["admin"]["useAdminAttribute"])
             { }
             else
             { Context.Abort(); System.Diagnostics.Debug.WriteLine(Context.Items["admin"].ToString() + "  " + Context.Items["uid"]); return; }
@@ -220,7 +176,7 @@ namespace ezchatv2.Hubs
                     banliststr += " " + i;
                 }
                 try { banliststr.Remove(0, 1); } catch { banliststr = "none"; }
-                await Clients.Caller.SendAsync("ServerMsg", "banlist", banliststr, "SERVER");
+                await Clients.Caller.SendAsync("AdminMsg", "banlist", banliststr, "SERVER");
             }
         }
 
