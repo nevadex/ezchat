@@ -7,7 +7,7 @@ console.warn("Running v2.7-dev! Expect errors or bugs!")
 
 var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/chatHub").build();
 
-//Disable send button until connection is established
+// disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
 
 // initialize context variables
