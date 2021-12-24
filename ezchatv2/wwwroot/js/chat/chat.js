@@ -1,9 +1,9 @@
 ﻿"use strict";
 
-// ezchat revision 7 DEV
+// ezchat v2.7-dev
 // made by nevadex (c) 2021
-//console.log("EZchat revision 6 started");
-console.warn("Running rev7-dev! Expect errors or bugs!")
+//console.log("EZchat v2.7 started");
+console.warn("Running v2.7-dev! Expect errors or bugs!")
 
 var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/chatHub").build();
 
@@ -14,6 +14,7 @@ document.getElementById("sendButton").disabled = true;
 var isAdmin = false;
 var isBanned = false;
 var uuid = null;
+var uid = null;
 
 // retrieve and process cookies
 //document.cookie = "debugCookie=" + "debug" + "; expires=Thu, 18 Dec 2050 12:00:00 UTC";
@@ -71,49 +72,6 @@ connection.on("ReceiveMessage", function (user, message, uid) {
     document.getElementById("messagesList").appendChild(li);
     // dont change, could allow script injection
     //li.textContent = `<${user}> ${message}`;
-
-    // profanity filter
-    // doesnt work :(
-    //#region old filter
-    /*
-    if (document.getElementById("filterMode").checked == true) {
-        var checkedUser = user;
-        var checkedMessage = message;
-
-        // initialize regex
-        //#region bad words
-        const badWords = ["fuck", "shit", "bitch", "ass", "nigger", "nigga"];
-        //#endregion
-        const reEscape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-        const badWordsRE = new RegExp(badWords.map(reEscape).join('|'));
-
-        var bwUser = checkedUser.match(badWordsRE)
-        var bwMessage = checkedMessage.match(badWordsRE)
-
-        // character to censor with
-        var censorChar = "*";
-        alert(bwUser.toString + " | " + bwMessage.toString);
-
-        for (let i in bwUser) {
-            var censor = "";
-            for (let x = 0; x == i.length; x++) { censor += censorChar; }
-            alert("1");
-            checkedUser = checkedUser.replace(i, censor);
-            alert("2");
-        }
-        for (let i in bwMessage) {
-            var censor = "e";
-            //for (let x = 0; x == i.length; x++) { censor += censorChar; }
-            alert("3" + censor);
-            checkedMessage = message.replace(i, censor);
-            alert("4");
-        }
-
-        // update the message li
-        li.textContent = `<${checkedUser}> ${checkedMessage}`;
-    }
-    */
-    //#endregion
 
     var checkedUser = user;
     var checkedMessage = message;
@@ -236,6 +194,7 @@ connection.start().then(function () {
 
 // set context/uid var
 uuid = uidCookie + "/" + userCookie;
+uid = uidCookie;
 
 // if user has admin, it is true
 if (document.getElementById("adminPanel").dataset.use_attribute == "True") {
@@ -416,50 +375,4 @@ function refreshConnectionState() {
 
 document.getElementById("conState").addEventListener("click", function (event) {
     refreshConnectionState();
-});
-
-// admin panel controls
-document.getElementById("admin-refreshBanlistButton").addEventListener("click", function (event) {
-    connection.invoke("ServerMsg", "banlist", "", uuid);
-});
-
-document.getElementById("admin-banButton").addEventListener("click", function (event) {
-    var banInput = document.getElementById("admin-banInput").value;
-    if (document.getElementById("admin-banInput").value = "") {
-        alert("Admin: missing UID");
-        return;
-    }
-
-    connection.invoke("ServerMsg", "ban", banInput, uuid);
-    document.getElementById("admin-banInput").value = "";
-    connection.invoke("ServerMsg", "banlist", "", uuid);
-});
-
-document.getElementById("admin-unbanButton").addEventListener("click", function (event) {
-    var unbanInput = document.getElementById("admin-unbanInput").value;
-    if (document.getElementById("admin-unbanInput").value = "") {
-        alert("Admin: missing UID");
-        return;
-    }
-
-    connection.invoke("ServerMsg", "unban", unbanInput, uuid);
-    document.getElementById("admin-unbanInput").value = "";
-    connection.invoke("ServerMsg", "banlist", "", uuid);
-});
-
-document.getElementById("admin-reconButton").addEventListener("click", function (event) {
-    connection.stop().then(function () {
-        connection.start().then(function () {
-            // login to hub
-            //connection.invoke("Login", document.getElementById("userInput").value, uidCookie).catch(function (err) {
-            //    connection.stop();
-            //    return console.error(err.toString());
-            //});
-
-            //console.log("Admin: Logged in as [" + userCookie + "] with UID [" + uidCookie + "]");
-            console.warn("Admin: Reconnected without login, connection unstable.", connection);
-        }).catch(function (err) {
-            return console.error(err.toString());
-        });
-    });
 });
