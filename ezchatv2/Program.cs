@@ -18,7 +18,7 @@ namespace ezchatv2
         {
             Console.WriteLine("Initializing...");
 
-            StreamReader tomlreader = File.OpenText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "admin/config.toml"));
+            StreamReader tomlreader = File.OpenText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.config_file));
             ChatConfig.configTable = TOML.Parse(tomlreader);
             ChatConfig.msglog_file = ChatConfig.configTable["advanced"]["msglog"];
             ChatConfig.banlist_file = ChatConfig.configTable["advanced"]["banlist"];
@@ -40,5 +40,7 @@ namespace ezchatv2
         public static TomlTable configTable;
         public static string msglog_file;
         public static string banlist_file;
+
+        public static readonly string config_file = "admin/config.toml";
     }
 }
