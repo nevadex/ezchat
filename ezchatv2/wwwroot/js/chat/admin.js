@@ -5,10 +5,12 @@
 
 // admin panel controls
 document.getElementById("admin-refreshBanlistButton").addEventListener("click", function (event) {
+    refreshConnectionState();
     connection.invoke("AdminMsg", "banlist", "", uid);
 });
 
 document.getElementById("admin-banButton").addEventListener("click", function (event) {
+    refreshConnectionState();
     var banInput = document.getElementById("admin-banInput").value;
     if (document.getElementById("admin-banInput").value = "") {
         alert("Admin: missing UID");
@@ -21,6 +23,7 @@ document.getElementById("admin-banButton").addEventListener("click", function (e
 });
 
 document.getElementById("admin-unbanButton").addEventListener("click", function (event) {
+    refreshConnectionState();
     var unbanInput = document.getElementById("admin-unbanInput").value;
     if (document.getElementById("admin-unbanInput").value = "") {
         alert("Admin: missing UID");
@@ -33,6 +36,7 @@ document.getElementById("admin-unbanButton").addEventListener("click", function 
 });
 
 document.getElementById("admin-reconButton").addEventListener("click", function (event) {
+    /*
     connection.stop().then(function () {
         connection.start().then(function () {
             // login to hub
@@ -46,7 +50,47 @@ document.getElementById("admin-reconButton").addEventListener("click", function 
         }).catch(function (err) {
             return console.error(err.toString());
         });
-    });
+    });*/
+    // disabled in html
+
+    alert("The reconnect button is currently disabled.");
+});
+
+// chat controls
+document.getElementById("admin-clearCache").addEventListener("click", function (event) {
+    refreshConnectionState();
+    // auto
+    connection.invoke("AdminMsg", "clearCache", "", uid);
+});
+document.getElementById("admin-reloadConfig").addEventListener("click", function (event) {
+    refreshConnectionState();
+    // auto
+    connection.invoke("AdminMsg", "reloadConfig", "", uid);
+});
+document.getElementById("admin-refreshAllClients").addEventListener("click", function (event) {
+    refreshConnectionState();
+    // auto
+    connection.invoke("AdminMsg", "refreshAllClients", "", uid);
+});
+document.getElementById("admin-changeMotd").addEventListener("click", function (event) {
+    refreshConnectionState();
+    // input
+    let newMotd = prompt("New MOTD:");
+    connection.invoke("AdminMsg", "changeMotd", newMotd, uid);
+});
+document.getElementById("admin-pauseChat").addEventListener("click", function (event) {
+    refreshConnectionState();
+    // confirm
+    if (confirm("Confirm pausing chat?\nPressing pause again will unpause chat.\n")) {
+        connection.invoke("AdminMsg", "pauseChat", "", uid);
+    }
+});
+document.getElementById("admin-stopChat").addEventListener("click", function (event) {
+    refreshConnectionState();
+    // confirm
+    if (confirm("Confirm stopping chat?\nThis is irreversible, and EZchat will have to be restarted from the host.")) {
+        connection.invoke("AdminMsg", "stopChat", "", uid);
+    }
 });
 
 // server methods

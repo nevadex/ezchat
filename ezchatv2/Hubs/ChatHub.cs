@@ -125,9 +125,10 @@ namespace ezchatv2.Hubs
             else if (ChatConfig.configTable["admin"]["useAdminAttribute"])
             { }
             else
-            { Context.Abort(); System.Diagnostics.Debug.WriteLine(Context.Items["admin"].ToString() + "  " + Context.Items["uid"]); return; }
+            { Context.Abort(); return; }
 
-            // usable types: ban unban banlist
+
+            // usable types: ban unban banlist clearCache reloadConfig refreshAllClients changeMotd pauseChat stopChat
             if (type == "ban")
             {
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
@@ -140,7 +141,7 @@ namespace ezchatv2.Hubs
                 {
                     if (i.uid == message)
                     {
-                        bannedConID = i.uid;
+                        bannedConID = i.message;
                     }
                 }
 
@@ -177,6 +178,33 @@ namespace ezchatv2.Hubs
                 }
                 try { banliststr.Remove(0, 1); } catch { banliststr = "none"; }
                 await Clients.Caller.SendAsync("AdminMsg", "banlist", banliststr, "SERVER");
+            }
+            else if (type == "clearCache")
+            {
+                while (ppcontext.recentMsgs.Count != 0)
+                {
+                    ppcontext.recentMsgs.RemoveAt(0);
+                }
+            }
+            else if (type == "reloadConfig")
+            {
+
+            }
+            else if (type == "refreshAllClients")
+            {
+                await Clients.All.SendAsync("ServerMsg", "reload", "", "SERVER");
+            }
+            else if (type == "changeMotd")
+            {
+
+            }
+            else if (type == "pauseChat")
+            {
+
+            }
+            else if (type == "stopChat")
+            {
+
             }
         }
 
@@ -223,6 +251,9 @@ namespace ezchatv2.Hubs
         public string uid { get; set; }
     }
 
+    /// <summary>
+    /// A state/context class for chat operation
+    /// </summary>
     public class ppcontext
     {
         public static List<msg> recentMsgs = new List<msg>();

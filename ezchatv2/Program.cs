@@ -35,8 +35,14 @@ namespace ezchatv2
                 });
     }
 
+    /// <summary>
+    /// Configuration class for chat.
+    /// </summary>
     public class ChatConfig
     {
+        /// <summary>
+        /// A TOMLTable of configuration settings from loaded file.
+        /// </summary>
         public static TomlTable configTable;
         public static string msglog_file;
         public static string banlist_file;

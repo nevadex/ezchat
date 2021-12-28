@@ -74,6 +74,14 @@
             color: black;
             border-radius: 4px;
         }
+
+        .buttonAdminSmall {
+            background-color: lightgray;
+            color: black;
+            border-radius: 4px;
+            display: inline;
+            font-size: 12px;
+        }
     </style>
 </head>
 
@@ -96,16 +104,25 @@
     <h5 style="font-size: 18px;">Admin Panel</h5>
     <p id="admin-clientList">Online UUIDs: []</p>
 
-    <h5 style="font-size: 15px;"><br />Manage bans:</h5>
+    <h5 style="font-size: 15px;"><br />Manage bans</h5>
     <p id="admin-banList">Banned UIDs: []</p>
     <input type="button" class="buttonTest" id="admin-refreshBanlistButton" value="Refresh" style="display: inline;" />
-    <input type="button" class="buttonTest" id="admin-reconButton" value="Reconnect" style="display: inline;" disabled/>
+    <input type="button" class="buttonTest" id="admin-reconButton" value="Reconnect" style="display: inline;" disabled />
     <br />
     <input type="text" id="admin-banInput" placeholder="Enter UID..." />
     <input type="button" id="admin-banButton" value="Ban!" style="background-color: darkred; color: white; display: inline;" />
     <br />
     <input type="text" id="admin-unbanInput" placeholder="Enter UID..." />
     <input type="button" id="admin-unbanButton" value="Unban!" style="background-color: darkred; color: white; display: inline;" />
+
+    <h5 style="font-size: 15px;"><br />Chat Controls</h5>
+    <input type="button" class="buttonAdminSmall" id="admin-clearCache" value="Clear Msg Cache" />
+    <input type="button" class="buttonAdminSmall" id="admin-reloadConfig" value="Reload Config" />
+    <input type="button" class="buttonAdminSmall" id="admin-refreshAllClients" value="Refresh All Clients" />
+    <input type="button" class="buttonAdminSmall" id="admin-changeMotd" value="Change MOTD" />
+    <input type="button" class="buttonAdminSmall" id="admin-pauseChat" value="Pause Chat" style="background-color: yellow;" />
+    <input type="button" class="buttonAdminSmall" id="admin-stopChat" value="Stop Chat" style="background-color: darkred; color: white;" />
+
     <hr />
 </div>
 
