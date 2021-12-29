@@ -23,6 +23,7 @@ namespace ezchatv2.Pages
             ViewData["siteTitle"] = ChatConfig.configTable["basic"]["siteTitle"];
             ViewData["motd"] = ChatConfig.configTable["basic"]["motd"];
             ViewData["escapeLink"] = ChatConfig.configTable["basic"]["escapeLink"];
+            ViewData["version"] = ChatConfig.version;
 
             ViewData["useAdminAttribute"] = ChatConfig.configTable["admin"]["useAdminAttribute"];
         }

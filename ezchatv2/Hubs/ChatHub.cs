@@ -50,9 +50,9 @@ namespace ezchatv2.Hubs
 
                 msg cMsg = new msg { user = user, message = message, uid = Context.Items["uid"].ToString() };
                 ppcontext.recentMsgs.Add(cMsg);
-                if (ppcontext.recentMsgs.Count > 20)
+                if (ppcontext.recentMsgs.Count > ChatConfig.configTable["basic"]["recentMsgs"])
                 {
-                    while (ppcontext.recentMsgs.Count > 20)
+                    while (ppcontext.recentMsgs.Count > ChatConfig.configTable["basic"]["recentMsgs"])
                     {
                         ppcontext.recentMsgs.RemoveAt(0);
                     }

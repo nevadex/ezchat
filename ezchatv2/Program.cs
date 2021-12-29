@@ -53,9 +53,10 @@ namespace ezchatv2
                     Console.WriteLine("Alerts: " + values[3]);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("Could not verify appcheck, shutting down.");
+                Console.WriteLine("Could not verify appcheck, shutting down.\n");
+                Console.WriteLine(ex.ToString());
                 Environment.Exit(-1);
                 return;
             }
