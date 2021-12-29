@@ -94,6 +94,10 @@ connection.on("ReceiveMessage", function (user, message, uid) {
         checkedMessage = checkedMessage.replaceAll(/nigga/img, "n****");
         checkedMessage = checkedMessage.replaceAll(/cum/img, "c**");
         checkedMessage = checkedMessage.replaceAll(/dick/img, "d***");
+
+        var test = new RegExp("wasd", "img");
+        console.log(test.toString());
+        checkedMessage = checkedMessage.replaceAll(test, "test");
         //#endregion
     }
 
