@@ -39,19 +39,23 @@ namespace ezchatv2.Hubs
             }
             await Clients.All.SendAsync("ServerMsg", "clientList", clientListMsg, "SERVER");
 
-            await Clients.All.SendAsync("ReceiveMessage", user, message, Context.Items["uid"]);
-            Console.WriteLine("<" + user + "/" + Context.Items["uid"] + "> " + message);
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.msglog_file);
-            string text = File.ReadAllText(path) + "\n[" + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt") + "] " + Context.Items["uid"] + "/" + user + ": " + message;
-            File.WriteAllText(path, text);
-
-            msg cMsg = new msg {user = user, message = message, uid = Context.Items["uid"].ToString()};
-            ppcontext.recentMsgs.Add(cMsg);
-            if (ppcontext.recentMsgs.Count > 20)
+            // message delivery
+            if (ppcontext.paused == false)
             {
-                while (ppcontext.recentMsgs.Count > 20)
+                await Clients.All.SendAsync("ReceiveMessage", user, message, Context.Items["uid"]);
+                Console.WriteLine("<" + user + "/" + Context.Items["uid"] + "> " + message);
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.msglog_file);
+                string text = File.ReadAllText(path) + "\n[" + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt") + "] " + Context.Items["uid"] + "/" + user + ": " + message;
+                File.WriteAllText(path, text);
+
+                msg cMsg = new msg { user = user, message = message, uid = Context.Items["uid"].ToString() };
+                ppcontext.recentMsgs.Add(cMsg);
+                if (ppcontext.recentMsgs.Count > 20)
                 {
-                    ppcontext.recentMsgs.RemoveAt(0);
+                    while (ppcontext.recentMsgs.Count > 20)
+                    {
+                        ppcontext.recentMsgs.RemoveAt(0);
+                    }
                 }
             }
         }
@@ -113,7 +117,7 @@ namespace ezchatv2.Hubs
             // usable types: 
             if (true)
             {
-                
+                await Clients.Caller.SendAsync("ServerMsg", "none", "", "SERVER");
             }
         }
 
@@ -188,7 +192,8 @@ namespace ezchatv2.Hubs
             }
             else if (type == "reloadConfig")
             {
-
+                StreamReader tomlreader = File.OpenText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.config_file));
+                ChatConfig.configTable = TOML.Parse(tomlreader);
             }
             else if (type == "refreshAllClients")
             {
@@ -196,15 +201,17 @@ namespace ezchatv2.Hubs
             }
             else if (type == "changeMotd")
             {
-
+                ChatConfig.configTable["basic"]["motd"] = message;
             }
             else if (type == "pauseChat")
             {
-
+                ppcontext.paused = !ppcontext.paused;
+                Console.WriteLine(uid + " set pause to " + ppcontext.paused.ToString());
             }
             else if (type == "stopChat")
             {
-
+                Console.WriteLine(uid + " stopped EZchat @ " + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                Environment.Exit(0);
             }
         }
 
@@ -259,5 +266,6 @@ namespace ezchatv2.Hubs
         public static List<msg> recentMsgs = new List<msg>();
         public static HashSet<string> ConnectedIds = new HashSet<string>();
         public static List<msg> contextedUsers = new List<msg>();
+        public static bool paused = false;
     }
 }

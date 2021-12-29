@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Tommy;
 using System.IO;
+using System.Net.Http;
 
 namespace ezchatv2
 {
@@ -22,6 +23,43 @@ namespace ezchatv2
             ChatConfig.configTable = TOML.Parse(tomlreader);
             ChatConfig.msglog_file = ChatConfig.configTable["advanced"]["msglog"];
             ChatConfig.banlist_file = ChatConfig.configTable["advanced"]["banlist"];
+
+            // appcheck
+            var request = new HttpRequestMessage(new HttpMethod("GET"), ChatConfig.appcheck_url);
+            try
+            {
+                var client = new HttpClient();
+                var response = client.SendAsync(request);
+                string result = response.Result.Content.ReadAsStringAsync().Result;
+                //version¶backwards_compat_ver¶link_to_latest¶alerts
+                string[] values = result.Split("¶");
+                decimal new_ver = decimal.Parse(values[0], System.Globalization.NumberStyles.Number);
+                decimal bcv = decimal.Parse(values[1], System.Globalization.NumberStyles.Number);
+
+                // check version
+                if (new_ver > ChatConfig.raw_version)
+                {
+                    Console.WriteLine("EZchat {0} is outdated. Please update to EZchat {1}.", ChatConfig.raw_version.ToString(), values[0]);
+                    if (ChatConfig.raw_version < bcv)
+                    {
+                        Console.WriteLine("EZchat {0} is not compatible with your current configuration.", values[0]);
+                    }
+                    Console.WriteLine("Download EZchat {0} from here: {1}", values[0], values[2]);
+                }
+
+                // alerts
+                if (values[3] != "none\n")
+                {
+                    Console.WriteLine("Alerts: " + values[3]);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Could not verify appcheck, shutting down.");
+                Environment.Exit(-1);
+                return;
+            }
+
 
             CreateHostBuilder(args).Build().Run();
         }
@@ -48,5 +86,8 @@ namespace ezchatv2
         public static string banlist_file;
 
         public static readonly string config_file = "admin/config.toml";
+        public static readonly decimal raw_version = 2.7m; // NOTE: If modifying, do not change this version number!
+        public static readonly string version = "EZchat v2.7";
+        public static readonly string appcheck_url = "https://raw.githubusercontent.com/nevadex/ezchat/master/repo/appcheck";
     }
 }

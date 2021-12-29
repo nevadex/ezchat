@@ -80,10 +80,8 @@ document.getElementById("admin-changeMotd").addEventListener("click", function (
 });
 document.getElementById("admin-pauseChat").addEventListener("click", function (event) {
     refreshConnectionState();
-    // confirm
-    if (confirm("Confirm pausing chat?\nPressing pause again will unpause chat.\n")) {
-        connection.invoke("AdminMsg", "pauseChat", "", uid);
-    }
+    // auto
+    connection.invoke("AdminMsg", "pauseChat", "", uid);
 });
 document.getElementById("admin-stopChat").addEventListener("click", function (event) {
     refreshConnectionState();
