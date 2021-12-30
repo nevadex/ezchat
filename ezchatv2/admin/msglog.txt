@@ -1,1 +1,1 @@
-﻿EZchat rev 6 / message logger
+﻿EZchat / message logger

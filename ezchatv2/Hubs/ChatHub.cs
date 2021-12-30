@@ -158,7 +158,7 @@ namespace ezchatv2.Hubs
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
                 List<string> banlist = File.ReadAllText(path).Split("\n").ToList<string>();
                 banlist.Remove(banlist[0]);
-                string banliststr = "ez chat v2 / ban list";
+                string banliststr = "EZchat / ban list";
                 foreach (string i in banlist)
                 {
                     if (i != message)

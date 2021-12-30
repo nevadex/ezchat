@@ -20,14 +20,15 @@ motd = "Have a wonderful day!"
 escapeLink = "https://google.com"
 
 # how many recent messages to cache and send to new connections
-# must be an integer greater than 0
+# must be an integer greater than -1
+# set to 0 to cache and send no messages
 recentMsgs = 20
 
 # Admin stuff
 [admin]
 
 # admin uids
-adminUids = ["admin_uid1", "admin_uid2", "PkRlns8WAZpwRjzQpDXjcA"]
+adminUids = ["admin_uid1", "admin_uid2"]
 
 # use ?admin=true attribute
 # HUGE SECURITY PROBLEM
