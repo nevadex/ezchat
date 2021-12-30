@@ -69,6 +69,7 @@ connection.on("ReceiveMessage", function (user, message, uid) {
     //li.title = "Sender UID: " + uid;
     li.dataset.uid = uid;
     li.dataset.user = user;
+    li.dataset.raw = message
     document.getElementById("messagesList").appendChild(li);
     // dont change, could allow script injection
     //li.textContent = `<${user}> ${message}`;
@@ -76,29 +77,8 @@ connection.on("ReceiveMessage", function (user, message, uid) {
     var checkedUser = user;
     var checkedMessage = message;
     if (document.getElementById("filterMode").checked == true) {
-        //#region BAD WORDS
-        checkedUser = checkedUser.replaceAll(/fuck/img, "f***");
-        checkedUser = checkedUser.replaceAll(/bitch/img, "b****");
-        checkedUser = checkedUser.replaceAll(/ass/img, "a**");
-        checkedUser = checkedUser.replaceAll(/shit/img, "s***");
-        checkedUser = checkedUser.replaceAll(/nigger/img, "n*****");
-        checkedUser = checkedUser.replaceAll(/nigga/img, "n****");
-        checkedUser = checkedUser.replaceAll(/cum/img, "c**");
-        checkedUser = checkedUser.replaceAll(/dick/img, "d***");
-
-        checkedMessage = checkedMessage.replaceAll(/fuck/img, "f***");
-        checkedMessage = checkedMessage.replaceAll(/bitch/img, "b****");
-        checkedMessage = checkedMessage.replaceAll(/ass/img, "a**");
-        checkedMessage = checkedMessage.replaceAll(/shit/img, "s***");
-        checkedMessage = checkedMessage.replaceAll(/nigger/img, "n*****");
-        checkedMessage = checkedMessage.replaceAll(/nigga/img, "n****");
-        checkedMessage = checkedMessage.replaceAll(/cum/img, "c**");
-        checkedMessage = checkedMessage.replaceAll(/dick/img, "d***");
-
-        var test = new RegExp("wasd", "img");
-        console.log(test.toString());
-        checkedMessage = checkedMessage.replaceAll(test, "test");
-        //#endregion
+        checkedUser = pf_filter(checkedUser);
+        checkedMessage = pf_filter(checkedMessage);
     }
 
     // show uids mode
@@ -264,39 +244,25 @@ document.getElementById("filterMode").addEventListener("click", function (event)
         var x = document.querySelectorAll("li");
 
         for (let i = 0; i < x.length; i++) {
-            //#region BAD WORDS
-            x[i].textContent = x[i].textContent.replaceAll(/fuck/img, "f***");
-            x[i].textContent = x[i].textContent.replaceAll(/bitch/img, "b****");
-            x[i].textContent = x[i].textContent.replaceAll(/ass/img, "a**");
-            x[i].textContent = x[i].textContent.replaceAll(/shit/img, "s***");
-            x[i].textContent = x[i].textContent.replaceAll(/nigger/img, "n*****");
-            x[i].textContent = x[i].textContent.replaceAll(/nigga/img, "n****");
-            x[i].textContent = x[i].textContent.replaceAll(/faggot/img, "f*****");
-            x[i].textContent = x[i].textContent.replaceAll(/cum/img, "c**");
-            x[i].textContent = x[i].textContent.replaceAll(/dick/img, "d***");
-            //#endregion
+            x[i].textContent = pf_filter(x[i].textContent);
         }
     }
     else {
         var x = document.querySelectorAll("li");
 
         for (let i = 0; i < x.length; i++) {
-            //#region BAD WORDS
-            x[i].textContent = x[i].textContent.replaceAll(/f\*\*\*/img, "fuck");
-            x[i].textContent = x[i].textContent.replaceAll(/b\*\*\*\*/img, "bitch");
-            x[i].textContent = x[i].textContent.replaceAll(/a\*\*/img, "ass");
-            x[i].textContent = x[i].textContent.replaceAll(/s\*\*\*/img, "shit");
-            x[i].textContent = x[i].textContent.replaceAll(/n\*\*\*\*\*/img, "nigger");
-            x[i].textContent = x[i].textContent.replaceAll(/n\*\*\*\*/img, "nigga");
-            x[i].textContent = x[i].textContent.replaceAll(/f\*\*\*\*\*/img, "faggot");
-            x[i].textContent = x[i].textContent.replaceAll(/c\*\*/img, "cum");
-            x[i].textContent = x[i].textContent.replaceAll(/d\*\*\*/img, "dick");
-            //#endregion
+            if (document.getElementById("showUidsMode").checked == true) {
+                x[i].textContent = "<" + x[i].dataset.uid + "/" + x[i].dataset.user + "> " + x[i].dataset.raw;
+            }
+            else {
+                x[i].textContent = "<" + x[i].dataset.user + "> " + x[i].dataset.raw;
+            }
         }
     }
 });
 
 // show uids mode toggle thing
+// little bit buggy with pf
 document.getElementById("showUidsMode").addEventListener("click", function (event) {
     if (document.getElementById("showUidsMode").checked == true) {
         var x = document.querySelectorAll("li");
