@@ -1,9 +1,9 @@
 ﻿"use strict";
 
 // ezchat v2.7-dev
-// made by nevadex (c) 2021
-//console.log("EZchat v2.7 started");
-console.warn("Running v2.7-dev! Expect errors or bugs!")
+// made by nevadex (c) 2022
+console.log("EZchat v2.7 started");
+//console.warn("Running v2.7-dev! Expect errors or bugs!")
 
 var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/chatHub").build();
 

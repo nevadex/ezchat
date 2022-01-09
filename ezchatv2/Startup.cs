@@ -22,7 +22,7 @@ namespace ezchatv2
             Configuration = configuration;
 
             Console.WriteLine("{0} started", ChatConfig.version);
-            Console.WriteLine("nevadex (c) 2021");
+            Console.WriteLine("nevadex (c) 2022");
         }
 
         public IConfiguration Configuration { get; }
