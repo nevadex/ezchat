@@ -130,7 +130,7 @@
     <div>
         <div class="" style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; width:100px; grid-gap:20px;">
             <div>
-                <input type="button" class="buttonTest" id="toggleOptions" value="Show Options" />
+                <input type="button" class="btn btn-outline-secondary" id="toggleOptions" value="Show Options" />
             </div>
             <div style="display:none" id="ttsModeDiv">
                 <p>TTS Mode</p>
@@ -161,23 +161,23 @@
                 </label>
             </div>
             <div style="display:none" id="clearMsgDiv">
-                <input type="button" class="buttonTest" id="clearMsgList" value="Clear All Messages" />
+                <input type="button" class="btn btn-outline-warning" id="clearMsgList" value="Clear All Messages" />
             </div>
         </div>
         <div class="row">&nbsp;</div>
         <div class="row">
             <div class="col-2">Username</div>
-            <div class="col-4"><input type="text" id="userInput" /></div>
+            <div class="col-6"><input class="form-control" type="text" id="userInput" placeholder="Username"/></div>
         </div>
         <div class="row">
             <div class="col-2">Message</div>
-            <div class="col-4"><input type="text" id="messageInput" /></div>
+            <div class="col-6"><input class="form-control" type="text" id="messageInput" placeholder="Message"/></div>
         </div>
         <div class="row">&nbsp;</div>
     </div>
     <div class="row">
         <div class="col-6">
-            <input type="button" class="buttonTest" id="sendButton" value="Send Message" disabled/>
+            <input type="button" class="btn btn-primary" id="sendButton" value="Send Message" disabled/>
             <p style="font-size:12px; color:gray;" id="conState">[Connecting...]</p>
             <input type="button" id="loadConvo" value="Load Convo" hidden/>
         </div>
@@ -188,7 +188,10 @@
         <hr />
     </div>
 </div>
-
+<div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="customSwitch1">
+    <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
+</div>
 
 <div class="row">
     <div class="col-6">

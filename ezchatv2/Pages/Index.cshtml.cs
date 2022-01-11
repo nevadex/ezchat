@@ -18,6 +18,9 @@ namespace ezchatv2.Pages
 
         public void OnGet()
         {
+            //System.Diagnostics.Debug.WriteLine(HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString());
+            // gets ip address
+            
             ViewData["siteName"] = ChatConfig.configTable["basic"]["siteName"];
             ViewData["siteTitle"] = ChatConfig.configTable["basic"]["siteTitle"];
             ViewData["motd"] = ChatConfig.configTable["basic"]["motd"];

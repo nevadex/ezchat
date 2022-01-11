@@ -5,6 +5,11 @@
     {
       "library": "@microsoft/signalr@latest",
       "destination": "wwwroot/js/signalr"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-switch@3.3.4",
+      "destination": "wwwroot/lib/bootstrap-switch/"
     }
   ]
 }
