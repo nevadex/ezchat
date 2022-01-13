@@ -106,80 +106,108 @@
 
     <h5 style="font-size: 15px;"><br />Manage bans</h5>
     <p id="admin-banList">Banned UIDs: []</p>
-    <input type="button" class="buttonAdminSmall" id="admin-refreshBanlistButton" value="Refresh" style="display: inline;" />
-    <input type="button" class="buttonAdminSmall" id="admin-reconButton" value="Reconnect" style="display: inline;" disabled />
+    <input type="button" class="btn btn-secondary btn-sm" id="admin-refreshBanlistButton" value="Refresh" style="display: inline;" />
+    <input type="button" class="btn btn-secondary btn-sm" id="admin-reconButton" value="Reconnect" style="display: inline;" disabled />
     <br />
-    <input type="text" id="admin-banInput" placeholder="Enter UID..." />
-    <input type="button" id="admin-banButton" value="Ban!" style="background-color: darkred; color: white; display: inline;" />
+    <input type="text" id="admin-banInput" placeholder="Enter UID..." class="form-control-sm" />
+    <input type="button" id="admin-banButton" value="Ban!" class="btn btn-danger btn-sm" />
     <br />
-    <input type="text" id="admin-unbanInput" placeholder="Enter UID..." />
-    <input type="button" id="admin-unbanButton" value="Unban!" style="background-color: darkred; color: white; display: inline;" />
+    <input type="text" id="admin-unbanInput" placeholder="Enter UID..." class="form-control-sm" />
+    <input type="button" id="admin-unbanButton" value="Unban!" class="btn btn-success btn-sm" />
 
     <h5 style="font-size: 15px;"><br />Chat Controls</h5>
-    <input type="button" class="buttonAdminSmall" id="admin-clearCache" value="Clear Msg Cache" />
-    <input type="button" class="buttonAdminSmall" id="admin-reloadConfig" value="Reload Config" />
-    <input type="button" class="buttonAdminSmall" id="admin-refreshAllClients" value="Refresh All Clients" />
-    <input type="button" class="buttonAdminSmall" id="admin-changeMotd" value="Change MOTD" />
-    <input type="button" class="buttonAdminSmall" id="admin-pauseChat" value="Pause Chat" />
-    <input type="button" class="buttonAdminSmall" id="admin-stopChat" value="Stop Chat" style="background-color: darkred; color: white;" />
+    <input type="button" class="btn btn-outline-info btn-sm" id="admin-reloadConfig" value="Reload Config" />
+    <input type="button" class="btn btn-outline-info btn-sm" id="admin-refreshAllClients" value="Refresh All Clients" />
+    <input type="button" class="btn btn-outline-info btn-sm" id="admin-changeMotd" value="Change MOTD" />
+    <input type="button" class="btn btn-outline-warning btn-sm" id="admin-clearCache" value="Clear Msg Cache" />
+    <input type="button" class="btn btn-warning btn-sm" id="admin-pauseChat" value="Pause Chat" />
+    <input type="button" class="btn btn-danger btn-sm" id="admin-stopChat" value="Stop Chat" />
 
     <hr />
 </div>
 
 <div class="container">
     <div>
-        <div class="" style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; width:100px; grid-gap:20px;">
-            <div>
-                <input type="button" class="btn btn-outline-secondary" id="toggleOptions" value="Show Options" />
-            </div>
-            <div style="display:none" id="ttsModeDiv">
-                <p>TTS Mode</p>
-                <label class="switch" style="display:inline-block;">
-                    <input type="checkbox" id="ttsMode">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div style="display:none" id="filterModeDiv">
-                <p>Profanity Filter</p>
-                <label class="switch" style="display:inline-block;">
-                    <input type="checkbox" id="filterMode">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div style="display:none" id="showUidsDiv">
-                <p>Show UIDs</p>
-                <label class="switch" style="display:inline-block;">
-                    <input type="checkbox" id="showUidsMode">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div style="display:none" id="showAdminDiv">
-                <p>Admin Panel</p>
-                <label class="switch" style="display:inline-block;">
-                    <input type="checkbox" id="showAdminMode">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div style="display:none" id="clearMsgDiv">
-                <input type="button" class="btn btn-outline-warning" id="clearMsgList" value="Clear All Messages" />
+        <div>
+            <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="custom-control custom-switch" >
+                                        <input type="checkbox" class="custom-control-input" id="ttsMode">
+                                        <label class="custom-control-label" for="ttsMode">TTS Mode</label>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                                <div class="row">
+                                    <div class="custom-control custom-switch" >
+                                        <input type="checkbox" class="custom-control-input" id="filterMode">
+                                        <label class="custom-control-label" for="filterMode">Profanity Filter</label>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                                <div class="row">
+                                    <div class="custom-control custom-switch" >
+                                        <input type="checkbox" class="custom-control-input" id="showUidsMode">
+                                        <label class="custom-control-label" for="showUidsMode">Show UIDs</label>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                                <div class="row">
+                                    <div class="custom-control custom-switch" id="showAdminDiv">
+                                        <input type="checkbox" class="custom-control-input" id="showAdminMode">
+                                        <label class="custom-control-label" for="showAdminMode">Admin Panel</label>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                                <div class="row" id="clearMsgDiv">
+                                    <input type="button" class="btn btn-outline-warning" id="clearMsgList" value="Clear Messages" />
+                                </div>
+                                <div class="row"><br /></div>
+                            </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                                </div>
+                            </div>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="row">&nbsp;</div>
         <div class="row">
             <div class="col-2">Username</div>
-            <div class="col-6"><input class="form-control" type="text" id="userInput" placeholder="Username"/></div>
+            <div class="col-6">
+                <input class="form-control" type="text" id="userInput" placeholder="Username" />
+                <div id="userInputFeedback"></div>
+            </div>
         </div>
         <div class="row">
             <div class="col-2">Message</div>
-            <div class="col-6"><input class="form-control" type="text" id="messageInput" placeholder="Message"/></div>
+            <div class="col-6">
+                <input class="form-control" type="text" id="messageInput" placeholder="Message" />
+                <div id="messageInputFeedback"></div>
+            </div>
         </div>
         <div class="row">&nbsp;</div>
     </div>
     <div class="row">
         <div class="col-6">
-            <input type="button" class="btn btn-primary" id="sendButton" value="Send Message" disabled/>
+            <input type="button" class="btn btn-primary" id="sendButton" value="Send Message" disabled />
+            <button type="button" class="btn btn-outline-secondary" style="display:inline;" id="toggleOptions" data-toggle="modal" data-target="#settingsModal" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+</svg></button>
             <p style="font-size:12px; color:gray;" id="conState">[Connecting...]</p>
-            <input type="button" id="loadConvo" value="Load Convo" hidden/>
+            <input type="button" id="loadConvo" value="Load Convo" hidden />
         </div>
     </div>
 </div>
@@ -188,10 +216,7 @@
         <hr />
     </div>
 </div>
-<div class="custom-control custom-switch">
-    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-    <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
-</div>
+
 
 <div class="row">
     <div class="col-6">

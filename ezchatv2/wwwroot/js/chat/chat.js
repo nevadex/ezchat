@@ -2,8 +2,15 @@
 
 // ezchat v2.7-dev
 // made by nevadex (c) 2022
-console.log("EZchat v2.7 started");
-//console.warn("Running v2.7-dev! Expect errors or bugs!")
+//console.log("EZchat v2.7 started");
+console.warn("Running v2.8-dev! Expect errors or bugs!")
+
+// fix message list
+// DONT WORK
+/*
+document.addEventListener("DOMContentLoaded", function (event) {
+    document.getElementById("messagesListDiv").style.height = document.getElementById("messagesListDiv").offsetHeight + "px";
+});*/
 
 var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/chatHub").build();
 
@@ -179,27 +186,81 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 
     var user = document.getElementById("userInput").value;
     var message = document.getElementById("messageInput").value;
+    var userDom = document.getElementById("userInput");
+    var messageDom = document.getElementById("messageInput");
+    var userFbDom = document.getElementById("userInputFeedback");
+    var messageFbDom = document.getElementById("messageInputFeedback");
 
     // test if the values are empty
     if (user == "") {
-        alert("Your username cannot be empty!")
+        userDom.classList.add("is-invalid");
+        userFbDom.classList.add("invalid-feedback");
+        userFbDom.innerHTML = "Your username cannot be empty!";
         return;
+    } else {
+        // clear feedbacks
+        userDom.classList.remove("is-invalid", "is-valid");
+        userFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        userFbDom.innerHTML = "";
+        messageDom.classList.remove("is-invalid", "is-valid");
+        messageFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        messageFbDom.innerHTML = "";
     }
     if (message == "") {
-        alert("Your message cannot be empty!")
+        messageDom.classList.add("is-invalid");
+        messageFbDom.classList.add("invalid-feedback");
+        messageFbDom.innerHTML = "Your message cannot be empty!";
         return;
+    } else {
+        // clear feedbacks
+        userDom.classList.remove("is-invalid", "is-valid");
+        userFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        userFbDom.innerHTML = "";
+        messageDom.classList.remove("is-invalid", "is-valid");
+        messageFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        messageFbDom.innerHTML = "";
     }
     if (user.length > 20) {
-        alert("Your username cannot be more than 20 characters!")
+        userDom.classList.add("is-invalid");
+        userFbDom.classList.add("invalid-feedback");
+        userFbDom.innerHTML = "Your username cannot be more than 20 characters!";
         return;
+    } else {
+        // clear feedbacks
+        userDom.classList.remove("is-invalid", "is-valid");
+        userFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        userFbDom.innerHTML = "";
+        messageDom.classList.remove("is-invalid", "is-valid");
+        messageFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        messageFbDom.innerHTML = "";
     }
     if (message.length > 200) {
-        alert("Your message cannot be more than 200 characters!")
+        messageDom.classList.add("is-invalid");
+        messageFbDom.classList.add("invalid-feedback");
+        messageFbDom.innerHTML = "Your message cannot be more than 200 characters!";
         return;
+    } else {
+        // clear feedbacks
+        userDom.classList.remove("is-invalid", "is-valid");
+        userFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        userFbDom.innerHTML = "";
+        messageDom.classList.remove("is-invalid", "is-valid");
+        messageFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        messageFbDom.innerHTML = "";
     }
     if (user.includes(" ")) {
-        alert("Your username cannot contain a space!")
+        userDom.classList.add("is-invalid");
+        userFbDom.classList.add("invalid-feedback");
+        userFbDom.innerHTML = "Your username cannot contain a space!";
         return;
+    } else {
+        // clear feedbacks
+        userDom.classList.remove("is-invalid", "is-valid");
+        userFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        userFbDom.innerHTML = "";
+        messageDom.classList.remove("is-invalid", "is-valid");
+        messageFbDom.classList.remove("invalid-feedback", "valid-feedback");
+        messageFbDom.innerHTML = "";
     }
 
     // save username in cookie
@@ -215,27 +276,13 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 
 // control options visibility
 document.getElementById("toggleOptions").addEventListener("click", function (event) {
-    refreshConnectionState(); // refresh
-    var toggleOptions = document.getElementById("toggleOptions");
-    if (toggleOptions.value == "Show Options") {
-        toggleOptions.value = "Hide Options"
-        document.getElementById("ttsModeDiv").style.display = "initial";
-        document.getElementById("filterModeDiv").style.display = "initial";
-        document.getElementById("clearMsgDiv").style.display = "initial";
-        document.getElementById("showUidsDiv").style.display = "initial";
-        if (isAdmin == true) {
-            document.getElementById("showAdminDiv").style.display = "initial";
-        }
+    refreshConnectionState(); // refresh    
+    if (isAdmin == true) {
+        document.getElementById("showAdminDiv").style.display = "initial";
     }
-    else if (toggleOptions.value == "Hide Options") {
-        toggleOptions.value = "Show Options"
-        document.getElementById("ttsModeDiv").style.display = "none";
-        document.getElementById("filterModeDiv").style.display = "none";
-        document.getElementById("clearMsgDiv").style.display = "none";
-        document.getElementById("showUidsDiv").style.display = "none";
+    else {
         document.getElementById("showAdminDiv").style.display = "none";
     }
-    else { }
 });
 
 // filter mode toggle thing

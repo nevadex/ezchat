@@ -28,7 +28,7 @@ recentMsgs = 20
 [admin]
 
 # admin uids
-adminUids = ["admin_uid1", "admin_uid2"]
+adminUids = ["admin_uid1", "admin_uid2", "PkRlns8WAZpwRjzQpDXjcA"]
 
 # use ?admin=true attribute
 # HUGE SECURITY PROBLEM
