@@ -98,6 +98,15 @@ connection.on("AdminMsg", function (type, message, uid) {
     }
     else if (type == "clientAdmin") {
         isAdmin = true;
+        // load admin setting
+        if (isAdmin == true) {
+            if (localStorage.getItem("showAdminMode") == "true") {
+                //document.getElementById("showAdminMode").checked = true;
+                document.getElementById("showAdminMode").click();
+            } else {
+                document.getElementById("showAdminMode").checked = false;
+            }
+        }
     }
 });
 

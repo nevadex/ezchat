@@ -5,12 +5,29 @@
 //console.log("EZchat v2.7 started");
 console.warn("Running v2.8-dev! Expect errors or bugs!")
 
-// fix message list
-// DONT WORK
-/*
-document.addEventListener("DOMContentLoaded", function (event) {
-    document.getElementById("messagesListDiv").style.height = document.getElementById("messagesListDiv").offsetHeight + "px";
-});*/
+// on load
+$(document).ready(function () {
+    //document.getElementById("messagesListDiv").style.height = document.getElementById("messagesListDiv").offsetHeight + "px";
+
+    if (localStorage.getItem("ttsMode") == "true") {
+        //document.getElementById("ttsMode").checked = true;
+        document.getElementById("ttsMode").click();
+    } else {
+        document.getElementById("ttsMode").checked = false;
+    }
+    if (localStorage.getItem("filterMode") == "true") {
+        //document.getElementById("filterMode").checked = true;
+        document.getElementById("filterMode").click();
+    } else {
+        document.getElementById("filterMode").checked = false;
+    }
+    if (localStorage.getItem("showUidsMode") == "true") {
+        //document.getElementById("showUidsMode").checked = true;
+        document.getElementById("showUidsMode").click();
+    } else {
+        document.getElementById("showUidsMode").checked = false;
+    }
+});
 
 var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/chatHub").build();
 
@@ -172,7 +189,6 @@ connection.start().then(function () {
     });
 
     console.log("Logged in as [" + userCookie + "] with UID [" + uidCookie + "]");
-
 }).catch(function (err) {
         return console.error(err.toString());
 });
@@ -365,4 +381,15 @@ function refreshConnectionState() {
 
 document.getElementById("conState").addEventListener("click", function (event) {
     refreshConnectionState();
+});
+
+// save settings in local storage
+document.getElementById("settingsModalCloseButton").addEventListener("click", function (event) {
+    refreshConnectionState();
+    localStorage.setItem("ttsMode", document.getElementById("ttsMode").checked.toString());
+    localStorage.setItem("filterMode", document.getElementById("filterMode").checked.toString());
+    localStorage.setItem("showUidsMode", document.getElementById("showUidsMode").checked.toString());
+    if (isAdmin == true) {
+        localStorage.setItem("showAdminMode", document.getElementById("showAdminMode").checked.toString());
+    }
 });
