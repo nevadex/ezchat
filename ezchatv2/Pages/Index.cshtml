@@ -2,87 +2,6 @@
 @model IndexModel
 <head>
     <title>@ViewData["siteTitle"]</title>
-    <style>
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-            .switch input {
-                opacity: 0;
-                width: 0;
-                height: 0;
-            }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-            .slider:before {
-                position: absolute;
-                content: "";
-                height: 26px;
-                width: 26px;
-                left: 4px;
-                bottom: 4px;
-                background-color: white;
-                -webkit-transition: .4s;
-                transition: .4s;
-            }
-
-        input:checked + .slider {
-            background-color: #04d82b;
-        }
-
-        input:focus + .slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
-
-        input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-
-        /* Rounded sliders */
-        .slider.round {
-            border-radius: 34px;
-        }
-
-            .slider.round:before {
-                border-radius: 50%;
-            }
-
-        .button5 {
-            background-color: lightgray;
-            color: black;
-            border: 2px solid #555555;
-        }
-
-        .buttonTest {
-            background-color: lightgray;
-            color: black;
-            border-radius: 4px;
-        }
-
-        .buttonAdminSmall {
-            background-color: lightgray;
-            color: black;
-            border-radius: 4px;
-            display: inline;
-            font-size: 12px;
-        }
-    </style>
 </head>
 
 <div class="container" id="motd">
@@ -124,14 +43,6 @@
     <input type="button" class="btn btn-danger btn-sm" id="admin-stopChat" value="Stop Chat" />
 
     <hr />
-</div>
-
-<div class="row">
-    <div class="col-6">
-        <div id="messagesListDiv" style="display: flex; flex-direction: column;">
-            <ul id="messagesList" style="flex-grow: 1; overflow: auto;"></ul>
-        </div>
-    </div>
 </div>
 
 <div class="container">
@@ -227,13 +138,13 @@
 </div>
 
 
-<!--<div class="row">
+<div class="row">
     <div class="col-6">
         <div id="messagesListDiv" style="display: flex; flex-direction: column;">
             <ul id="messagesList" style="flex-grow: 1; overflow: auto;"></ul>
         </div>
     </div>
-</div>-->
+</div>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>

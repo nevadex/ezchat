@@ -87,8 +87,8 @@ namespace ezchatv2
         public static string banlist_file;
 
         public static readonly string config_file = "admin/config.toml";
-        public static readonly decimal raw_version = 2.7m; // NOTE: If modifying, do not change this version number!
-        public static readonly string version = "EZchat v2.7";
+        public static readonly decimal raw_version = 2.8m; // NOTE: If modifying, do not change this version number!
+        public static readonly string version = "EZchat v2.8";
         public static readonly string appcheck_url = "https://raw.githubusercontent.com/nevadex/ezchat/master/repo/appcheck";
     }
 }
