@@ -123,6 +123,17 @@ document.getElementById("showAdminMode").addEventListener("click", function (eve
     }
 });
 
+// control showAdminPanel option visibility
+document.getElementById("toggleOptions").addEventListener("click", function (event) {
+    refreshConnectionState(); // refresh    
+    if (isAdmin == true) {
+        document.getElementById("showAdminDiv").style.display = "initial";
+    }
+    else {
+        document.getElementById("showAdminDiv").style.display = "none";
+    }
+});
+
 // use admin attribute
 // security vuln lmao
 if (document.getElementById("adminPanel").dataset.use_attribute == "True") {

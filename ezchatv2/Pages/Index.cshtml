@@ -4,6 +4,12 @@
     <title>@ViewData["siteTitle"]</title>
 </head>
 
+<div class="loading-overlay" id="loadingOverlay">
+    <img src="~/assets/ezchat_logo_dark.jpg" alt="ezchat is loading" style="position:absolute; top:0; bottom:0; left:0; right:0; margin:auto; width:15%;" />
+    <p style="position: absolute; bottom: 0; left: 10px; margin: auto;">@ViewData["version"] &copy; Nevadex 2022</p>
+    <p style="position: absolute; bottom: 0; right: 10px; margin: auto;">loading..</p>
+</div>
+
 <div class="container" id="motd">
     <p style="font-size: 20px; font-style: italic">@ViewData["motd"]</p>
     <hr />
@@ -81,7 +87,7 @@
                                 </div>
                                 <div class="row"><br /></div>
                                 <div class="row">
-                                    <div class="custom-control custom-switch" id="showAdminDiv">
+                                    <div class="custom-control custom-switch" id="showAdminDiv" style="display:none;">
                                         <input type="checkbox" class="custom-control-input" id="showAdminMode">
                                         <label class="custom-control-label" for="showAdminMode">Admin Panel</label>
                                     </div>
@@ -148,6 +154,7 @@
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat/start.js"></script>
 <script src="~/js/chat/chat.js"></script>
 <script src="~/js/chat/admin.js"></script>
 <script src="~/js/chat/filter.js"></script>

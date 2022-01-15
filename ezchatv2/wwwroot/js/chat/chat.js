@@ -1,76 +1,10 @@
 ﻿"use strict";
 
-// ezchat v2.7-dev
+// ezchat v2.8
 // made by nevadex (c) 2022
-//console.log("EZchat v2.7 started");
-console.warn("Running v2.8-dev! Expect errors or bugs!")
-
-// on load
-$(document).ready(function () {
-    //document.getElementById("messagesListDiv").style.height = document.getElementById("messagesListDiv").offsetHeight + "px";
-
-    if (localStorage.getItem("ttsMode") == "true") {
-        //document.getElementById("ttsMode").checked = true;
-        document.getElementById("ttsMode").click();
-    } else {
-        document.getElementById("ttsMode").checked = false;
-    }
-    if (localStorage.getItem("filterMode") == "true") {
-        //document.getElementById("filterMode").checked = true;
-        document.getElementById("filterMode").click();
-    } else {
-        document.getElementById("filterMode").checked = false;
-    }
-    if (localStorage.getItem("showUidsMode") == "true") {
-        //document.getElementById("showUidsMode").checked = true;
-        document.getElementById("showUidsMode").click();
-    } else {
-        document.getElementById("showUidsMode").checked = false;
-    }
-});
-
-var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl("/chatHub").build();
 
 // disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
-
-// initialize context variables
-var isAdmin = false;
-var isBanned = false;
-var uuid = null;
-var uid = null;
-
-// retrieve and process cookies
-//document.cookie = "debugCookie=" + "debug" + "; expires=Thu, 18 Dec 2050 12:00:00 UTC";
-var cookieString = document.cookie;
-var cookies = cookieString.split("; ");
-var userCookie;
-var uidCookie;
-cookies.forEach(function (value) {
-    if (value.includes("user=")) {
-        userCookie = value.replace("user=", "");
-    }
-    else {
-        //userCookie = null;
-    }
-    if (value.includes("uid=")) {
-        uidCookie = value.replace("uid=", "");
-    }
-    else {
-        uidCookie = null;
-        // uid created later
-    }
-});
-
-// set user if cookie
-if (userCookie != null) {
-    document.getElementById("userInput").value = userCookie;
-    document.getElementById("messageInput").focus();
-}
-else {
-    userCookie = "user"; // default username
-    document.getElementById("userInput").focus();
-}
 
 // when enter is hit in the message box, it sends the message
 document.getElementById("messageInput")
@@ -168,35 +102,6 @@ connection.on("ServerMsg", function (type, message, uid) {
     }
 });
 
-connection.start().then(function () {
-    // create uid if non-existant
-    // currently just using first conID,
-    // use SHA1 hash if u want
-    if (uidCookie == null) {
-        var firstConId = connection.connectionId;
-        document.cookie = "uid=" + firstConId + "; expires=Thu, 18 Dec 2050 12:00:00 UTC";
-        uidCookie = firstConId;
-    }
-
-    document.getElementById("sendButton").disabled = false;
-    // change conState on page
-    document.getElementById("conState").textContent = "[Connected!]";
-
-    // login to hub
-    connection.invoke("Login", userCookie, uidCookie).catch(function (err) {
-        connection.stop();
-        return console.error(err.toString());
-    });
-
-    console.log("Logged in as [" + userCookie + "] with UID [" + uidCookie + "]");
-}).catch(function (err) {
-        return console.error(err.toString());
-});
-
-// set context/uid var
-uuid = uidCookie + "/" + userCookie;
-uid = uidCookie;
-
 document.getElementById("sendButton").addEventListener("click", function (event) {
     refreshConnectionState(); // refresh
 
@@ -290,17 +195,6 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     document.getElementById("messageInput").focus();
 });
 
-// control options visibility
-document.getElementById("toggleOptions").addEventListener("click", function (event) {
-    refreshConnectionState(); // refresh    
-    if (isAdmin == true) {
-        document.getElementById("showAdminDiv").style.display = "initial";
-    }
-    else {
-        document.getElementById("showAdminDiv").style.display = "none";
-    }
-});
-
 // filter mode toggle thing
 document.getElementById("filterMode").addEventListener("click", function (event) {
     if (document.getElementById("filterMode").checked == true) {
@@ -349,35 +243,6 @@ document.getElementById("clearMsgList").addEventListener("click", function (even
         ul.removeChild(ul.firstChild)
     }
 });
-
-function refreshConnectionState() {
-    if (isBanned == false) {
-        var state = connection.state;
-        var label = document.getElementById("conState");
-        label.textContent = "[?]"
-
-        if (state == "Connected") {
-            label.textContent = "[Connected!]";
-            label.style.color = "gray";
-        }
-        else if (state == "Disconnected") {
-            label.textContent = "[Disconnected!]";
-            label.style.color = "red";
-            setTimeout(function () {
-                connection.stop(); connection.start().then(function () {
-                    connection.invoke("Login", document.getElementById("userInput").value, uidCookie).then(function () { refreshConnectionState(); }).catch(function (err) {
-                        return console.error(err.toString());
-                    });
-                });
-                refreshConnectionState();
-            }, 1500);
-        }
-        else {
-            label.textContent = "[" + state + "!]";
-            label.style.color = "red";
-        }
-    }
-}
 
 document.getElementById("conState").addEventListener("click", function (event) {
     refreshConnectionState();
