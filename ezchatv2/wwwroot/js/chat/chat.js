@@ -247,14 +247,3 @@ document.getElementById("clearMsgList").addEventListener("click", function (even
 document.getElementById("conState").addEventListener("click", function (event) {
     refreshConnectionState();
 });
-
-// save settings in local storage
-document.getElementById("settingsModalCloseButton").addEventListener("click", function (event) {
-    refreshConnectionState();
-    localStorage.setItem("ttsMode", document.getElementById("ttsMode").checked.toString());
-    localStorage.setItem("filterMode", document.getElementById("filterMode").checked.toString());
-    localStorage.setItem("showUidsMode", document.getElementById("showUidsMode").checked.toString());
-    if (isAdmin == true) {
-        localStorage.setItem("showAdminMode", document.getElementById("showAdminMode").checked.toString());
-    }
-});

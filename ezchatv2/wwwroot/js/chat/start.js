@@ -58,10 +58,6 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
-// set context/uid var
-uuid = uidCookie + "/" + userCookie;
-uid = uidCookie;
-
 // retrieve and process cookies
 //document.cookie = "debugCookie=" + "debug" + "; expires=Thu, 18 Dec 2050 12:00:00 UTC";
 var cookieString = document.cookie;
@@ -94,6 +90,10 @@ else {
     document.getElementById("userInput").focus();
 }
 
+// set context/uid var
+uuid = uidCookie + "/" + userCookie;
+uid = uidCookie;
+
 // load local storage for settings
 $(document).ready(function () {
     //document.getElementById("messagesListDiv").style.height = document.getElementById("messagesListDiv").offsetHeight + "px";
@@ -115,6 +115,12 @@ $(document).ready(function () {
         document.getElementById("showUidsMode").click();
     } else {
         document.getElementById("showUidsMode").checked = false;
+    }
+    if (localStorage.getItem("darkMode") == "true") {
+        //document.getElementById("darkMode").checked = true;
+        document.getElementById("darkMode").click();
+    } else {
+        document.getElementById("darkMode").checked = false;
     }
 });
 

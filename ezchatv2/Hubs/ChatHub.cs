@@ -17,6 +17,13 @@ namespace ezchatv2.Hubs
             if (!Context.Items.TryGetValue("uid", out object value))
             { Context.Abort(); return; }
 
+            // validation
+            if (user.Contains(" ")) { Context.Abort(); return; }
+            if (string.IsNullOrWhiteSpace(user)) { Context.Abort(); return; }
+            if (user.Length > 20) { Context.Abort(); return; }
+            if (string.IsNullOrWhiteSpace(message)) { Context.Abort(); return; }
+            if (message.Length > 200) { Context.Abort(); return; }
+
             msg x = new msg { };
             // update name if changed
             foreach (msg i in ppcontext.contextedUsers)
@@ -61,7 +68,12 @@ namespace ezchatv2.Hubs
         }
 
         public async Task Login(string user, string uid)
-        {   
+        {
+            // validation
+            if (user.Contains(" ")) { Context.Abort(); return; }
+            if (string.IsNullOrWhiteSpace(user)) { Context.Abort(); return; }
+            if (user.Length > 20) { Context.Abort(); return; }
+
             // check for ban
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
             List<string> banlist = File.ReadAllText(path).Split("\n").ToList<string>();
@@ -129,7 +141,7 @@ namespace ezchatv2.Hubs
             else if (ChatConfig.configTable["admin"]["useAdminAttribute"])
             { }
             else
-            { Context.Abort(); return; }
+            { Context.Abort(); System.Diagnostics.Debug.WriteLine(uid + " was kicked as impostor admin"); return; }
 
 
             // usable types: ban unban banlist clearCache reloadConfig refreshAllClients changeMotd pauseChat stopChat

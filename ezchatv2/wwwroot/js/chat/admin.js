@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-// ezchat v2.7 / admin script
+// ezchat v2.8 / admin script
 // made by nevadex (c) 2021
 
 // admin panel controls
