@@ -25,3 +25,8 @@ document.getElementById("settingsModalCloseButton").addEventListener("click", fu
     }
     localStorage.setItem("darkMode", document.getElementById("darkMode").checked.toString());
 });
+
+// background functions
+document.getElementById("uploadFileManualTrigger").addEventListener("click", function (event) {
+    document.getElementById("uploadFileManual").click();
+});

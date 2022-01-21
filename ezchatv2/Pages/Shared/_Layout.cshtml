@@ -14,15 +14,15 @@
 
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body class="bootstrap" id="mainBody">
+<body class="bootstrap" id="mainBody" ondrop="uploadFileHandler(event);" ondragover="dragOverHandler(event);">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-themed border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">@ViewData["siteName"]</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </button>-->
                 <div id="escapeButton" style="float:left">
                     <input type="button" onclick="window.location.href='@ViewData["escapeLink"]';" value="ESCAPE!" style="background-color:darkred; color:white;" />
                     <script>

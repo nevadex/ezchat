@@ -1,8 +1,10 @@
-﻿# EZchat v2.7
+﻿# EZchat v2.8
 # Configuration File
 # Do not rename this file!
 
 # After making any changes, reload the config from the admin panel or restart EZchat.
+
+
 
 # Basic config
 [basic]
@@ -24,6 +26,34 @@ escapeLink = "https://google.com"
 # set to 0 to cache and send no messages
 recentMsgs = 20
 
+
+
+# File system
+[fs]
+
+# toggles file system support
+fileSystem = true
+
+# filter file extensions
+filterFileExts = true
+allowedFileExts = [".png", ".jpg", ".jpeg"]
+blockedFileExts = [".exe", ".bin"]
+
+# auto display images
+autoDisplayImages = true
+imageFileExts = [".png", ".jpg", ".jpeg"]
+
+# file storage directory
+# REMOVE EXECUTE PERMISSIONS FROM THIS FOLDER
+fsDirectory = "filesystem"
+
+# max number of stored files
+# note: changing value to less that it was will not delete files
+# set to 0 to store infinite files
+maxFiles = 0
+
+
+
 # Admin stuff
 [admin]
 
@@ -33,6 +63,8 @@ adminUids = ["admin_uid1", "admin_uid2", "PkRlns8WAZpwRjzQpDXjcA"]
 # use ?admin=true attribute
 # HUGE SECURITY PROBLEM
 useAdminAttribute = false
+
+
 
 # Advanced settings, do not change unless you know what you are doing!!
 [advanced]

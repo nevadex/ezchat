@@ -8,6 +8,7 @@ console.log("[INIT] start");
 
 // common
 var c_hubUrl = "/chatHub";
+var c_fsUrl = "/api/fs"
 var c_ver = "EZchat v2.8";
 var c_dev = true;
 var c_defaultUsername = "user";
@@ -17,6 +18,7 @@ var isAdmin = false;
 var isBanned = false;
 var uuid = null;
 var uid = null;
+var fs_status = null;
 
 if (!c_dev) {
     console.log("[INIT] Running " + c_ver);
@@ -24,39 +26,43 @@ if (!c_dev) {
     console.warn("[INIT] Running " + c_ver + "-dev! Expect errors or bugs.");
 }
 
-// connection
 var connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None).withUrl(c_hubUrl).build();
-connection.start().then(function () {
-    // create uid if non-existant
-    // currently just using first conID,
-    // use SHA1 hash if u want
-    if (uidCookie == null) {
-        var firstConId = connection.connectionId;
-        document.cookie = "uid=" + firstConId + "; expires=Thu, 18 Dec 2050 12:00:00 UTC";
-        uidCookie = firstConId;
-    }
 
-    document.getElementById("sendButton").disabled = false;
-    // change conState on page
-    document.getElementById("conState").textContent = "[Connected!]";
+async function asyncInit() {
+    // connection
+    await connection.start().then(function () {
+        // create uid if non-existant
+        // currently just using first conID,
+        // use SHA1 hash if u want
+        if (uidCookie == null) {
+            var firstConId = connection.connectionId;
+            document.cookie = "uid=" + firstConId + "; expires=Thu, 18 Dec 2050 12:00:00 UTC";
+            uidCookie = firstConId;
+        }
 
-    // login to hub
-    connection.invoke("Login", userCookie, uidCookie).catch(function (err) {
-        connection.stop();
+        document.getElementById("sendButton").disabled = false;
+        // change conState on page
+        document.getElementById("conState").textContent = "[Connected!]";
+
+        // login to hub
+        connection.invoke("Login", userCookie, uidCookie).catch(function (err) {
+            connection.stop();
+            return console.error(err.toString());
+        });
+
+        console.log("[INIT] logged in as [" + userCookie + "] with UID [" + uidCookie + "]");
+
+        var init_end = performance.now();
+        var init_time = init_end - init_start
+        init_time = init_time.toFixed(1);
+        console.log(`[INIT] done! took ${init_time} ms`);
+
+        $("#loadingOverlay").fadeOut();
+    }).catch(function (err) {
         return console.error(err.toString());
     });
 
-    console.log("[INIT] logged in as [" + userCookie + "] with UID [" + uidCookie + "]");
-
-    var init_end = performance.now();
-    var init_time = init_end - init_start
-    init_time = init_time.toFixed(1);
-    console.log(`[INIT] done! took ${init_time} ms`);
-
-    $("#loadingOverlay").fadeOut();
-}).catch(function (err) {
-    return console.error(err.toString());
-});
+}
 
 // retrieve and process cookies
 //document.cookie = "debugCookie=" + "debug" + "; expires=Thu, 18 Dec 2050 12:00:00 UTC";
@@ -125,6 +131,23 @@ $(document).ready(function () {
 });
 
 console.log("[INIT] loaded local");
+
+fetch(c_fsUrl)
+    .then(response => response.json())
+    .then(data => {
+        fs_status = JSON.parse(data); 
+    }).then(a => {
+        if (fs_status["enabled"] == false) {
+            document.getElementById("uploadFileManualTrigger").disabled = true;
+            document.getElementById("uploadFileManual").disabled = true;
+            document.getElementById("uploadFileManualTrigger").hidden = true;
+            document.getElementById("uploadFileManual").hidden = true;
+        } 
+
+        console.log("[INIT] loaded FS_Status");
+    });
+
+asyncInit();
 
 function refreshConnectionState() {
     if (isBanned == false) {

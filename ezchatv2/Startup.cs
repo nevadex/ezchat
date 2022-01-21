@@ -32,6 +32,7 @@ namespace ezchatv2
         {
             services.AddRazorPages();
             services.AddSignalR();
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +60,7 @@ namespace ezchatv2
             {
                 endpoints.MapRazorPages();
                 endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapControllers();
             });
         }
     }

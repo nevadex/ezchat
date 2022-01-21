@@ -74,7 +74,7 @@ body {
 div.loading-overlay {
     opacity: 1;
     filter: alpha(opacity=20);
-    background-color: #224947;
+    background-color: #224848;
     width: 100%;
     height: 100%;
     z-index: 10;
