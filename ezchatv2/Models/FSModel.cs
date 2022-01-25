@@ -24,7 +24,7 @@ namespace ezchatv2.Models
 
     public class FS_UploadResponse
     {
-        public int key { get; set; }
+        public string key { get; set; }
         public string message { get; set; }
     }
 

@@ -49,7 +49,7 @@ fsDirectory = "filesystem"
 
 # file size limit (MB)
 # set to 0 to remove limit
-fileSizeLimit = 50
+fileSizeLimit = 8
 
 # max number of stored files
 # note: changing value to less that it was will not delete files

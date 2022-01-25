@@ -41,6 +41,9 @@ namespace ezchatv2.Controllers
 
         [HttpPost]
         [Produces("application/json")]
+        [DisableRequestSizeLimit]
+        [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
+        // due to restrictions, all requests have a hardware limit of 2.14 GB
         public async Task<IActionResult> Upload(IFormFile file)
         {
             /*try
@@ -58,6 +61,17 @@ namespace ezchatv2.Controllers
             try
             {
                 System.Diagnostics.Debug.WriteLine("file named [" + file.FileName + "] from uid [" + Request.Headers["uid"] + "]");
+                FS_UploadResponse response = new FS_UploadResponse();
+
+                int maxFileLimit = ChatConfig.configTable["fs"]["fileSizeLimit"] * 1000000;
+                if (file.Length > maxFileLimit)
+                {
+                    response.key = null;
+                    response.message = "fileSizeLimitExceeded";
+                    
+                    return BadRequest(JsonConvert.SerializeObject(response, Formatting.None));
+
+                }
 
                 var fspath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.configTable["fs"]["fsDirectory"], "test" + FSMethods.GetFileExtension(file.FileName));
                 var stream = new FileStream(fspath, FileMode.OpenOrCreate);
@@ -65,8 +79,7 @@ namespace ezchatv2.Controllers
                 await stream.DisposeAsync();
                 stream.Close();
 
-                FS_UploadResponse response = new FS_UploadResponse();
-                response.key = 0;
+                response.key = "0";
                 response.message = null;
                 string jsonstring = JsonConvert.SerializeObject(response, Formatting.None);
                 return Ok(jsonstring);
