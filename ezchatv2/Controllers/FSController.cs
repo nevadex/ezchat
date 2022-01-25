@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ezchatv2.Models;
 using Tommy;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace ezchatv2.Controllers
 {
@@ -35,6 +37,44 @@ namespace ezchatv2.Controllers
             string jsonstring = JsonConvert.SerializeObject(status, Formatting.None);
 
             return Ok(jsonstring);
+        }
+
+        [HttpPost]
+        [Produces("application/json")]
+        public async Task<IActionResult> Upload(IFormFile file)
+        {
+            /*try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", file.FileName);
+                var stream = new FileStream(path, FileMode.Create);
+                await file.CopyToAsync(stream);
+                return Ok(new { length = file.Length, name = file.FileName });
+            }
+            catch
+            {
+                return BadRequest();
+            }*/
+
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("file named [" + file.FileName + "] from uid [" + Request.Headers["uid"] + "]");
+
+                var fspath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.configTable["fs"]["fsDirectory"], "test" + FSMethods.GetFileExtension(file.FileName));
+                var stream = new FileStream(fspath, FileMode.OpenOrCreate);
+                await file.CopyToAsync(stream);
+                await stream.DisposeAsync();
+                stream.Close();
+
+                FS_UploadResponse response = new FS_UploadResponse();
+                response.key = 0;
+                response.message = null;
+                string jsonstring = JsonConvert.SerializeObject(response, Formatting.None);
+                return Ok(jsonstring);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
         }
     }
 }

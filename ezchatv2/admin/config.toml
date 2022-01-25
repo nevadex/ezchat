@@ -47,6 +47,10 @@ imageFileExts = [".png", ".jpg", ".jpeg"]
 # REMOVE EXECUTE PERMISSIONS FROM THIS FOLDER
 fsDirectory = "filesystem"
 
+# file size limit (MB)
+# set to 0 to remove limit
+fileSizeLimit = 50
+
 # max number of stored files
 # note: changing value to less that it was will not delete files
 # set to 0 to store infinite files
