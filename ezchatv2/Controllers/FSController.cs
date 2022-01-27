@@ -60,7 +60,8 @@ namespace ezchatv2.Controllers
 
             try
             {
-                System.Diagnostics.Debug.WriteLine("file named [" + file.FileName + "] from uid [" + Request.Headers["uid"] + "]");
+                //System.Diagnostics.Debug.WriteLine("file named [" + file.FileName + "] from uid [" + Request.Headers["uid"] + "]");
+                Util.VerboseConsole("[FS] " + "file named [" + file.FileName + "] from uid [" + Request.Headers["uid"] + "]");
                 FS_UploadResponse response = new FS_UploadResponse();
 
                 int maxFileLimit = ChatConfig.configTable["fs"]["fileSizeLimit"] * 1000000;

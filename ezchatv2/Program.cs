@@ -115,4 +115,49 @@ namespace ezchatv2
         public static bool a_Verbose = false;
         public static bool a_skipAppcheck = false;
     }
+
+    /// <summary>
+    /// Utility methods
+    /// </summary>
+    public class Util
+    {
+        /// <summary>
+        /// Wrapper that checks if verbose is enabled before WriteLine.
+        /// Also prints if in Debug.
+        /// </summary>
+        /// <param name="text">Text to WriteLine to console</param>
+        public static void VerboseConsole(string text)
+        {
+            if (ChatConfig.a_Verbose)
+            {
+                Console.WriteLine(text);
+            }
+            else if (System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Diagnostics.Debug.WriteLine(text);
+            }
+        }
+
+        /// <summary>
+        /// Wrapper that checks if verbose is enabled before WriteLine.
+        /// Also prints if in Debug.
+        /// </summary>
+        /// <param name="vtext">Text to WriteLine to console when verbose</param>
+        /// <param name="ctext">Text to WriteLine to console when normal</param>
+        public static void VerboseConsole(string vtext, string ctext)
+        {
+            if (ChatConfig.a_Verbose)
+            {
+                Console.WriteLine(vtext);
+            }
+            else if (System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Diagnostics.Debug.WriteLine(vtext);
+            }
+            else
+            {
+                Console.WriteLine(ctext);
+            }
+        }
+    }
 }
