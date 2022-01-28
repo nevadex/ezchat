@@ -58,12 +58,22 @@ function test(file, fileName) {
     var maindiv = document.getElementById("messageInputCardDeck");
 
     var carddiv = document.createElement("div");
+    carddiv.id = "FC_" + fileName;
     carddiv.classList.add("card", "border-info");
 
     var cardheader = document.createElement("div");
     cardheader.classList.add("card-header");
     cardheader.innerHTML = fileName;
+    var cardclosebutton = document.createElement("button");
+    cardclosebutton.type = "button";
+    cardclosebutton.classList.add("close");
+    cardclosebutton.onclick = function () { document.getElementById("FC_" + fileName).remove(); };
+    var buttonspan = document.createElement("span");
+    buttonspan.innerHTML = "&times;";
+    cardclosebutton.appendChild(buttonspan);
+    cardheader.appendChild(cardclosebutton);
     carddiv.appendChild(cardheader);
+    
 
     var cardbody = document.createElement("div");
     cardbody.classList.add("card-body");
