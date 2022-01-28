@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace ezchatv2.Models
@@ -42,6 +43,15 @@ namespace ezchatv2.Models
             {
                 return null;
             }
+        }
+
+        public static string CreateHashKey()
+        { 
+            var bytes = new byte[8];
+            var rng = new RNGCryptoServiceProvider();
+            rng.GetNonZeroBytes(bytes);
+            string hash = BitConverter.ToString(bytes).Replace("-", "").ToLower();
+            return hash;
         }
     }
 }

@@ -33,9 +33,11 @@ function uploadFileHandler(ev) {
 document.getElementById("uploadFileManual").addEventListener("change", () => {
     var files = document.getElementById("uploadFileManual").files;
     for (var i = 0; i < files.length; i++) {
-        uploadFile(files[i], uid);
+        //uploadFile(files[i], uid);
+        test(files[i], files[i].name);
+
     }
-    files.value = "";
+    document.getElementById("uploadFileManual").value = "";
 });
 
 function uploadFile(file, uid) {
@@ -50,4 +52,27 @@ function uploadFile(file, uid) {
     .then(res => res.json())
     .then(json => console.log(json))
     .catch(err => console.error(err));
+}
+
+function test(file, fileName) {
+    var maindiv = document.getElementById("messageInputCardDeck");
+
+    var carddiv = document.createElement("div");
+    carddiv.classList.add("card", "border-info");
+
+    var cardheader = document.createElement("div");
+    cardheader.classList.add("card-header");
+    cardheader.innerHTML = fileName;
+    carddiv.appendChild(cardheader);
+
+    var cardbody = document.createElement("div");
+    cardbody.classList.add("card-body");
+    var img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    img.style.maxHeight = "100%";
+    img.style.maxWidth = "100%";
+    cardbody.appendChild(img);
+    carddiv.appendChild(cardbody);
+
+    maindiv.appendChild(carddiv);
 }

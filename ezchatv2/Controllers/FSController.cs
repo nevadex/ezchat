@@ -60,16 +60,18 @@ namespace ezchatv2.Controllers
 
             try
             {
-                //System.Diagnostics.Debug.WriteLine("file named [" + file.FileName + "] from uid [" + Request.Headers["uid"] + "]");
-                Util.VerboseConsole("[FS] " + "file named [" + file.FileName + "] from uid [" + Request.Headers["uid"] + "]");
+                Util.VerboseConsole("[FS] " + "file named [" + file.FileName + "] [" + (file.Length/1000000).ToString() + " MB] from uid [" + Request.Headers["uid"] + "]", "[FS] file upload attempt from [" + Request.Headers["uid"] + "]");
+
                 FS_UploadResponse response = new FS_UploadResponse();
+                response.key = FSMethods.CreateHashKey();
+                Util.VerboseConsole("[FS] key generated [" + response.key + "] for file [" + file.FileName + "]");
 
                 int maxFileLimit = ChatConfig.configTable["fs"]["fileSizeLimit"] * 1000000;
                 if (file.Length > maxFileLimit)
                 {
+                    Util.VerboseConsole("[FS] " + response.key + ": upload failed [fileSizeLimitExceeded]", "[FS] upload failed");
                     response.key = null;
                     response.message = "fileSizeLimitExceeded";
-                    
                     return BadRequest(JsonConvert.SerializeObject(response, Formatting.None));
 
                 }
@@ -79,9 +81,11 @@ namespace ezchatv2.Controllers
                 await file.CopyToAsync(stream);
                 await stream.DisposeAsync();
                 stream.Close();
+                Util.VerboseConsole("[FS] " + response.key + ": uploaded to [" + "test"+FSMethods.GetFileExtension(file.FileName) + "]");
 
-                response.key = "0";
-                response.message = null;
+                response.key = FSMethods.CreateHashKey();
+                Util.VerboseConsole("[FS] key generated: [" + response.key + "]");
+                response.message = "success";
                 string jsonstring = JsonConvert.SerializeObject(response, Formatting.None);
                 return Ok(jsonstring);
             }

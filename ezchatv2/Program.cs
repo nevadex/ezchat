@@ -123,24 +123,24 @@ namespace ezchatv2
     {
         /// <summary>
         /// Wrapper that checks if verbose is enabled before WriteLine.
-        /// Also prints if in Debug.
+        /// <br/>Also prints if debugger is attached.
         /// </summary>
         /// <param name="text">Text to WriteLine to console</param>
         public static void VerboseConsole(string text)
         {
             if (ChatConfig.a_Verbose)
             {
-                Console.WriteLine(text);
+                Console.WriteLine("v"+text);
             }
             else if (System.Diagnostics.Debugger.IsAttached)
             {
-                System.Diagnostics.Debug.WriteLine(text);
+                System.Diagnostics.Debug.WriteLine("d"+text);
             }
         }
 
         /// <summary>
         /// Wrapper that checks if verbose is enabled before WriteLine.
-        /// Also prints if in Debug.
+        /// <br/>Also prints if debugger is attached.
         /// </summary>
         /// <param name="vtext">Text to WriteLine to console when verbose</param>
         /// <param name="ctext">Text to WriteLine to console when normal</param>
@@ -148,11 +148,11 @@ namespace ezchatv2
         {
             if (ChatConfig.a_Verbose)
             {
-                Console.WriteLine(vtext);
+                Console.WriteLine("v"+vtext);
             }
             else if (System.Diagnostics.Debugger.IsAttached)
             {
-                System.Diagnostics.Debug.WriteLine(vtext);
+                System.Diagnostics.Debug.WriteLine("d"+vtext);
             }
             else
             {
