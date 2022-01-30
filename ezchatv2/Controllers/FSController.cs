@@ -63,28 +63,28 @@ namespace ezchatv2.Controllers
                 Util.VerboseConsole("[FS] " + "file named [" + file.FileName + "] [" + (file.Length/1000000).ToString() + " MB] from uid [" + Request.Headers["uid"] + "]", "[FS] file upload attempt from [" + Request.Headers["uid"] + "]");
 
                 FS_UploadResponse response = new FS_UploadResponse();
-                response.key = FSMethods.CreateHashKey();
-                Util.VerboseConsole("[FS] key generated [" + response.key + "] for file [" + file.FileName + "]");
 
                 int maxFileLimit = ChatConfig.configTable["fs"]["fileSizeLimit"] * 1000000;
                 if (file.Length > maxFileLimit)
                 {
-                    Util.VerboseConsole("[FS] " + response.key + ": upload failed [fileSizeLimitExceeded]", "[FS] upload failed");
-                    response.key = null;
+                    Util.VerboseConsole("[FS] " + file.FileName + ": upload failed [fileSizeLimitExceeded]", "[FS] upload failed");
+                    response.url = null;
                     response.message = "fileSizeLimitExceeded";
                     return BadRequest(JsonConvert.SerializeObject(response, Formatting.None));
 
                 }
+
+
 
                 var fspath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.configTable["fs"]["fsDirectory"], "test" + FSMethods.GetFileExtension(file.FileName));
                 var stream = new FileStream(fspath, FileMode.OpenOrCreate);
                 await file.CopyToAsync(stream);
                 await stream.DisposeAsync();
                 stream.Close();
-                Util.VerboseConsole("[FS] " + response.key + ": uploaded to [" + "test"+FSMethods.GetFileExtension(file.FileName) + "]");
+                Util.VerboseConsole("[FS] " + file.FileName + ": uploaded to [" + "test"+FSMethods.GetFileExtension(file.FileName) + "]");
 
-                response.key = FSMethods.CreateHashKey();
-                Util.VerboseConsole("[FS] key generated: [" + response.key + "]");
+                response.url = "api/fs?id=0";
+                Util.VerboseConsole("[FS] url generated: [" + response.url + "]");
                 response.message = "success";
                 string jsonstring = JsonConvert.SerializeObject(response, Formatting.None);
                 return Ok(jsonstring);

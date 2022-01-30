@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using LiteDB;
 
 namespace ezchatv2.Models
 {
@@ -25,8 +26,18 @@ namespace ezchatv2.Models
 
     public class FS_UploadResponse
     {
-        public string key { get; set; }
+        public string url { get; set; }
         public string message { get; set; }
+    }
+
+    public class FS_FileRecord
+    {
+        [BsonId]
+        public int bsonId { get; set; }
+        public int fileId { get; set; }
+        public string uploader { get; set; }
+        public string fileName { get; set; }
+        public string fileExt { get; set; }
     }
 
     public class FSMethods
@@ -43,15 +54,6 @@ namespace ezchatv2.Models
             {
                 return null;
             }
-        }
-
-        public static string CreateHashKey()
-        { 
-            var bytes = new byte[8];
-            var rng = new RNGCryptoServiceProvider();
-            rng.GetNonZeroBytes(bytes);
-            string hash = BitConverter.ToString(bytes).Replace("-", "").ToLower();
-            return hash;
         }
     }
 }

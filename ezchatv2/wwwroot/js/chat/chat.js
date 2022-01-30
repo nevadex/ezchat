@@ -102,7 +102,8 @@ connection.on("ServerMsg", function (type, message, uid) {
     }
 });
 
-document.getElementById("sendButton").addEventListener("click", function (event) {
+document.getElementById("sendButton").addEventListener("click", async function (event) {
+    event.preventDefault();
     refreshConnectionState(); // refresh
 
     var user = document.getElementById("userInput").value;
@@ -127,7 +128,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
         messageFbDom.classList.remove("invalid-feedback", "valid-feedback");
         messageFbDom.innerHTML = "";
     }
-    if (message == "") {
+    if (message == "" && fs_pendingFiles.length == 0) {
         messageDom.classList.add("is-invalid");
         messageFbDom.classList.add("invalid-feedback");
         messageFbDom.innerHTML = "Your message cannot be empty!";
@@ -187,10 +188,21 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     // save username in cookie
     document.cookie = "user=" + user + "; expires=Thu, 18 Dec 2050 12:00:00 UTC";
 
-    connection.invoke("SendMessage", user, message).catch(function (err) {
-        return console.error(err.toString());
-    });
-    event.preventDefault();
+    // check for files
+    if (fs_pendingFiles.length > 0) {
+        for (let i = 0; i < fs_pendingFiles.length; i++) {
+            await uploadFile(fs_pendingFiles[i].file, uid)
+                .then(object => {
+                    connection.invoke("SendMessage", user, window.location.href + object["url"]);
+                });
+        }
+        
+    }
+    else {
+        connection.invoke("SendMessage", user, message).catch(function (err) {
+            return console.error(err.toString());
+        });
+    }
     document.getElementById("messageInput").value = "";
     document.getElementById("messageInput").focus();
 });

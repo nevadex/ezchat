@@ -19,6 +19,7 @@ var isBanned = false;
 var uuid = null;
 var uid = null;
 var fs_status = null;
+var fs_pendingFiles = [];
 
 if (!c_dev) {
     console.log("[INIT] Running " + c_ver);

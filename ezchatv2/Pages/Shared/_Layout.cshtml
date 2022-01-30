@@ -24,7 +24,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>-->
                 <div id="escapeButton" style="float:left">
-                    <input type="button" onclick="window.location.href='@ViewData["escapeLink"]';" value="ESCAPE!" style="background-color:darkred; color:white;" />
+                    <input type="button" onclick="window.location.href='@ViewData["escapeLink"]';" value="ESCAPE!" class="btn btn-outline-danger" />
                     <script>
                         if ("@ViewData["escapeLink"]" == "") {
                             document.getElementById("escapeButton").style.display = "none";
