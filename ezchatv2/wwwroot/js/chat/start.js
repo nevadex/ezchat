@@ -8,7 +8,7 @@ console.log("[INIT] start");
 
 // common
 var c_hubUrl = "/chatHub";
-var c_fsUrl = "/api/fs"
+var c_fsUrl = "/fs"
 var c_ver = "EZchat v2.8";
 var c_dev = true;
 var c_defaultUsername = "user";
@@ -133,7 +133,7 @@ $(document).ready(function () {
 
 console.log("[INIT] loaded local");
 
-fetch(c_fsUrl)
+fetch(c_fsUrl+"/status")
     .then(response => response.json())
     .then(data => {
         fs_status = JSON.parse(data); 

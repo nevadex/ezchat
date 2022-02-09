@@ -11,7 +11,7 @@ using System.IO;
 
 namespace ezchatv2.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class FSController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace ezchatv2.Controllers
 
         [HttpGet]
         [Produces("application/json")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Status()
         {
             FS_Status status = new FS_Status();
             status.enabled = ChatConfig.configTable["fs"]["fileSystem"];
@@ -60,7 +60,7 @@ namespace ezchatv2.Controllers
 
             try
             {
-                Util.VerboseConsole("[FS] " + "file named [" + file.FileName + "] [" + (file.Length/1000000).ToString() + " MB] from uid [" + Request.Headers["uid"] + "]", "[FS] file upload attempt from [" + Request.Headers["uid"] + "]");
+                Util.VerboseConsole("[FS] " + "file named [" + file.FileName + "] [" + (file.Length / 1000000).ToString() + " MB] from uid [" + Request.Headers["uid"] + "]", "[FS] file upload attempt from [" + Request.Headers["uid"] + "]");
 
                 FS_UploadResponse response = new FS_UploadResponse();
 
@@ -81,9 +81,9 @@ namespace ezchatv2.Controllers
                 await file.CopyToAsync(stream);
                 await stream.DisposeAsync();
                 stream.Close();
-                Util.VerboseConsole("[FS] " + file.FileName + ": uploaded to [" + "test"+FSMethods.GetFileExtension(file.FileName) + "]");
+                Util.VerboseConsole("[FS] " + file.FileName + ": uploaded to [" + "test" + FSMethods.GetFileExtension(file.FileName) + "]");
 
-                response.url = "api/fs?id=0";
+                response.url = "api/fs?name=none.none";
                 Util.VerboseConsole("[FS] url generated: [" + response.url + "]");
                 response.message = "success";
                 string jsonstring = JsonConvert.SerializeObject(response, Formatting.None);
@@ -93,6 +93,14 @@ namespace ezchatv2.Controllers
             {
                 return StatusCode(500);
             }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Download(string name)
+        {
+            var bytes = await System.IO.File.ReadAllBytesAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.configTable["fs"]["fsDirectory"], "test.png"));
+            var file = File(bytes, "*/*", "test.png");
+            return file;
         }
     }
 }

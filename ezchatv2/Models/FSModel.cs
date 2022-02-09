@@ -33,10 +33,12 @@ namespace ezchatv2.Models
     public class FS_FileRecord
     {
         [BsonId]
-        public int bsonId { get; set; }
-        public int fileId { get; set; }
-        public string uploader { get; set; }
-        public string fileName { get; set; }
+        public int bsonId { get; set; } // bson id when put in db
+        public int fileId { get; set; } // index of file list
+        public string uploader { get; set; } // uid/user who uploaded file
+        public string displayName { get; set; } // original file name without ext
+        public string fileName { get; set; } // stored file name, changed in config opt "secureFileNames"
+        // format: regular=displayName.fileExt secure=fileId.fileExt.ezfs
         public string fileExt { get; set; }
     }
 

@@ -54,7 +54,7 @@ async function uploadFile(file, uid) {
     formData.append("file", file);
     var result;
 
-    await fetch(c_fsUrl, {
+    await fetch(c_fsUrl+"/Upload", {
         method: "POST", body: formData, headers: { "uid": uid }
     })
     .then(res => res.json())
