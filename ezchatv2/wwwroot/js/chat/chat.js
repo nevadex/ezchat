@@ -22,6 +22,13 @@ var voices = window.speechSynthesis.getVoices();
 speech.voice = voices[4];
 //window.speechSynthesis.speak(speech); // code got deprecated lmao
 
+class MsgTextSel {
+    constructor(text, isLink) {
+        this.text = text;
+        this.isLink = isLink;
+    }
+}
+
 connection.on("ReceiveMessage", function (user, message, uid) {
     var li = document.createElement("li");
     //li.title = "Sender UID: " + uid;
@@ -34,9 +41,39 @@ connection.on("ReceiveMessage", function (user, message, uid) {
 
     var checkedUser = user;
     var checkedMessage = message;
+    var msgSections = [];
+    // renderer
+    var rawMsgSections = message.split(" ");
+    if (!message.includes(" ")) { rawMsgSections = []; rawMsgSections.push(message); }
+    for (let i = 0; i < rawMsgSections.length; i++) {
+        var validator = document.createElement("a");
+        validator.href = rawMsgSections[i];
+        if (validator.host != document.location.host) {
+            var protsec = validator.href.split(":");
+            if ((protsec[0] == "http" || protsec[0] == "https") && (protsec[1].charAt(0) == "/" && protsec[1].charAt(1) == "/")) {
+                msgSections.push(new MsgTextSel(rawMsgSections[i], true));
+                continue;
+            }
+            else {
+                msgSections.push(new MsgTextSel(rawMsgSections[i], false));
+                continue;
+            }
+        } else {
+            msgSections.push(new MsgTextSel(rawMsgSections[i], false));
+            continue;
+        }
+        validator.remove();
+    }
+
     if (document.getElementById("filterMode").checked == true) {
         checkedUser = pf_filter(checkedUser);
-        checkedMessage = pf_filter(checkedMessage);
+        //checkedMessage = pf_filter(checkedMessage);
+
+        for (let i = 0; i < msgSections.length; i++) {
+            if (msgSections[i].isLink == false) {
+                msgSections[i].text = pf_filter(msgSections[i].text);
+            }
+        }
     }
 
     // show uids mode
@@ -50,7 +87,25 @@ connection.on("ReceiveMessage", function (user, message, uid) {
         window.speechSynthesis.speak(speech);
     }
 
-    li.textContent = `<${checkedUser}> ${checkedMessage}`;
+    // render compile
+    li.innerText = `<${checkedUser}> `;
+    for (let i = 0; i < msgSections.length; i++) {
+        if (msgSections[i].isLink) {
+            var a = document.createElement("a");
+            a.href = `${msgSections[i].text}`;
+            a.innerHTML = `${msgSections[i].text}`;
+            a.target = "_blank";
+            li.appendChild(a);
+            if ((msgSections.length - 1) > i) {
+                li.innerHTML = li.innerHTML + " ";
+            }
+        } else {
+            li.innerHTML = li.innerHTML + `${msgSections[i].text} `;
+        }
+    }
+
+    li.dataset.raw = li.innerHTML
+    //li.textContent = `<${checkedUser}> ${checkedMessage}`;
 });
 
 // Server Messenger
@@ -194,9 +249,10 @@ document.getElementById("sendButton").addEventListener("click", async function (
             await uploadFile(fs_pendingFiles[i].file, uid)
                 .then(object => {
                     connection.invoke("SendMessage", user, window.location.href + object["url"]);
-                });
+                    document.getElementById("FC_" + fs_pendingFiles[i].fileName).remove();
+                    fs_pendingFiles.splice(i, 1);
+                })
         }
-        
     }
     else {
         connection.invoke("SendMessage", user, message).catch(function (err) {

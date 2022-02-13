@@ -4,7 +4,12 @@
   "libraries": [
     {
       "library": "@microsoft/signalr@latest",
-      "destination": "wwwroot/js/signalr"
+      "destination": "wwwroot/js/signalr",
+      "files": [
+        "dist/browser/signalr.js",
+        "package.json",
+        "src/third-party-notices.txt"
+      ]
     },
     {
       "provider": "jsdelivr",
@@ -12,7 +17,9 @@
       "destination": "wwwroot/lib/forevolve/bootstrap-dark/",
       "files": [
         "dist/css/toggle-bootstrap-dark.min.css",
-        "dist/css/toggle-bootstrap.min.css"
+        "dist/css/toggle-bootstrap.min.css",
+        "LICENSE",
+        "package.json"
       ]
     }
   ]

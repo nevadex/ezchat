@@ -57,10 +57,12 @@ namespace ezchatv2.Controllers
             {
                 return BadRequest();
             }*/
+            string uploader = "unknown";
+            if (Request.Headers.ContainsKey("uid") && string.IsNullOrWhiteSpace(Request.Headers["uid"])) { uploader = Request.Headers["uid"]; }
 
             try
             {
-                Util.VerboseConsole("[FS] " + "file named [" + file.FileName + "] [" + (file.Length / 1000000).ToString() + " MB] from uid [" + Request.Headers["uid"] + "]", "[FS] file upload attempt from [" + Request.Headers["uid"] + "]");
+                Util.VerboseConsole("[FS] " + "file named [" + file.FileName + "] [" + (file.Length / 1000000).ToString() + " MB] from uid [" + uploader + "]", "[FS] file upload attempt from [" + Request.Headers["uid"] + "]");
 
                 FS_UploadResponse response = new FS_UploadResponse();
 
@@ -83,7 +85,7 @@ namespace ezchatv2.Controllers
                 stream.Close();
                 Util.VerboseConsole("[FS] " + file.FileName + ": uploaded to [" + "test" + FSMethods.GetFileExtension(file.FileName) + "]");
 
-                response.url = "api/fs?name=none.none";
+                response.url = "fs/download/?name=none.none";
                 Util.VerboseConsole("[FS] url generated: [" + response.url + "]");
                 response.message = "success";
                 string jsonstring = JsonConvert.SerializeObject(response, Formatting.None);
@@ -98,6 +100,9 @@ namespace ezchatv2.Controllers
         [HttpGet]
         public async Task<ActionResult> Download(string name)
         {
+            // validation
+            if (string.IsNullOrWhiteSpace(name)) { return BadRequest(); }
+
             var bytes = await System.IO.File.ReadAllBytesAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.configTable["fs"]["fsDirectory"], "test.png"));
             var file = File(bytes, "*/*", "test.png");
             return file;

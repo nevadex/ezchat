@@ -101,7 +101,7 @@ function queueFileUpload(file, fileName) {
 
         var carddiv = document.createElement("div");
         let index1 = (fs_pendingFiles.length).toString();
-        carddiv.id = "FC_" + index1;
+        carddiv.id = "FC_" + fileName;
         carddiv.classList.add("card", "border-info");
         carddiv.style.marginTop = "1px";
 
@@ -111,7 +111,7 @@ function queueFileUpload(file, fileName) {
         var cardclosebutton = document.createElement("button");
         cardclosebutton.type = "button";
         cardclosebutton.classList.add("close");
-        cardclosebutton.onclick = function () { fs_pendingFiles.splice(fs_pendingFiles.indexOf(uploadObj), 1); document.getElementById("FC_" + index1).remove(); };
+        cardclosebutton.onclick = function () { fs_pendingFiles.splice(fs_pendingFiles.indexOf(uploadObj), 1); document.getElementById("FC_" + fileName).remove(); };
         var buttonspan = document.createElement("span");
         buttonspan.innerHTML = "&times;";
         cardclosebutton.appendChild(buttonspan);
