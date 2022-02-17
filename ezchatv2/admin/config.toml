@@ -26,6 +26,12 @@ escapeLink = "https://google.com"
 # set to 0 to cache and send no messages
 recentMsgs = 20
 
+# username length limit
+userCharLimit = 20
+
+# message length limit
+messageCharLimit = 200
+
 
 
 # File system
@@ -34,10 +40,13 @@ recentMsgs = 20
 # toggles file system support
 fileSystem = true
 
-# filter file extensions
+# accepted file extensions
 filterFileExts = true
 allowedFileExts = [".png", ".jpg", ".jpeg"]
-blockedFileExts = [".exe", ".bin"]
+
+# included file extensions in the blocked list will be blocked
+# no matter the value of filterFileExts
+blockedFileExts = [".exe", ".php"]
 
 # auto display images
 autoDisplayImages = true
@@ -56,6 +65,9 @@ fileSizeLimit = 8
 # set to 0 to store infinite files
 maxFiles = 0
 
+# set stored file names to a secure name rather than the display name
+secureFileNames = true
+
 
 
 # Admin stuff
@@ -66,7 +78,7 @@ adminUids = ["admin_uid1", "admin_uid2", "PkRlns8WAZpwRjzQpDXjcA"]
 
 # use ?admin=true attribute
 # HUGE SECURITY PROBLEM
-useAdminAttribute = false
+useAdminAttribute = true
 
 
 

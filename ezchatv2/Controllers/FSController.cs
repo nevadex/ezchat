@@ -24,7 +24,9 @@ namespace ezchatv2.Controllers
 
         [HttpGet]
         [Produces("application/json")]
+#pragma warning disable CS1998
         public async Task<IActionResult> Status()
+#pragma warning restore CS1998
         {
             FS_Status status = new FS_Status();
             status.enabled = ChatConfig.configTable["fs"]["fileSystem"];

@@ -98,6 +98,7 @@ connection.on("AdminMsg", function (type, message, uid) {
     }
     else if (type == "clientAdmin") {
         isAdmin = true;
+        console.log("[CHAT] User has permission 'Admin'");
         // load admin setting
         if (isAdmin == true) {
             if (localStorage.getItem("showAdminMode") == "true") {
@@ -136,11 +137,11 @@ document.getElementById("toggleOptions").addEventListener("click", function (eve
 
 // use admin attribute
 // security vuln lmao
-if (document.getElementById("adminPanel").dataset.use_attribute == "True") {
+function UseAdminAttribute() {
     // currently checking for URLquery '?admin=true'
     var adminQuery = new URLSearchParams(window.location.search).get("admin");
-    if (adminQuery == "true") {
+    if (api_status["useAdminAttribute"] && adminQuery == "true") {
         isAdmin = true;
-        console.log("User has permission 'Admin'");
+        console.log("[CHAT] User has permission 'Admin'");
     }
 }

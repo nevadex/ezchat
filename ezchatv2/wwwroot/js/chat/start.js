@@ -9,6 +9,7 @@ console.log("[INIT] start");
 // common
 var c_hubUrl = "/chatHub";
 var c_fsUrl = "/fs"
+var c_apiUrl = "/api"
 var c_ver = "EZchat v2.8";
 var c_dev = true;
 var c_defaultUsername = "user";
@@ -18,6 +19,7 @@ var isAdmin = false;
 var isBanned = false;
 var uuid = null;
 var uid = null;
+var api_status = null;
 var fs_status = null;
 var fs_pendingFiles = [];
 
@@ -148,6 +150,15 @@ fetch(c_fsUrl+"/status")
         console.log("[INIT] loaded FS_Status");
     });
 
+fetch(c_apiUrl + "/status")
+    .then(response => response.json())
+    .then(data => {
+        api_status = JSON.parse(data);
+    }).then(a => {
+        UseAdminAttribute();
+        console.log("[INIT] loaded Api_Status");
+    });
+
 asyncInit();
 
 function refreshConnectionState() {
@@ -161,11 +172,15 @@ function refreshConnectionState() {
             label.style.color = "gray";
         }
         else if (state == "Disconnected") {
-            console.warn("disconnected! trying to reconnect");
+            console.warn("[WS] disconnected! trying to reconnect");
             label.textContent = "[Disconnected!]";
             label.style.color = "red";
             setTimeout(function () {
                 connection.stop(); connection.start().then(function () {
+                    var ul = document.getElementById("messagesList");
+                    while (ul.firstChild) {
+                        ul.removeChild(ul.firstChild)
+                    }
                     connection.invoke("Login", document.getElementById("userInput").value, uidCookie).then(function () { refreshConnectionState(); }).catch(function (err) {
                         return console.error(err.toString());
                     });

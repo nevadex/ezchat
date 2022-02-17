@@ -20,9 +20,9 @@ namespace ezchatv2.Hubs
             // validation
             if (user.Contains(" ")) { Context.Abort(); return; }
             if (string.IsNullOrWhiteSpace(user)) { Context.Abort(); return; }
-            if (user.Length > 20) { Context.Abort(); return; }
+            if (user.Length > ChatConfig.configTable["basic"]["userCharLimit"]) { Context.Abort(); return; }
             if (string.IsNullOrWhiteSpace(message)) { Context.Abort(); return; }
-            if (message.Length > 200) { Context.Abort(); return; }
+            if (message.Length > ChatConfig.configTable["basic"]["messageCharLimit"]) { Context.Abort(); return; }
 
             msg x = new msg { };
             // update name if changed
@@ -72,7 +72,7 @@ namespace ezchatv2.Hubs
             // validation
             if (user.Contains(" ")) { Context.Abort(); return; }
             if (string.IsNullOrWhiteSpace(user)) { Context.Abort(); return; }
-            if (user.Length > 20) { Context.Abort(); return; }
+            if (user.Length > ChatConfig.configTable["basic"]["userCharLimit"]) { Context.Abort(); return; }
 
             // check for ban
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);

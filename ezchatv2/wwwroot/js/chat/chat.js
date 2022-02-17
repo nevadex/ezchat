@@ -11,7 +11,7 @@ document.getElementById("messageInput")
     .addEventListener("keyup", function (event) {
         event.preventDefault();
         if (event.keyCode === 13) {
-            document.getElementById("sendButton").click();
+            document.getElementById("sendButton").click(event);
         }
     });
 
@@ -144,7 +144,8 @@ connection.on("ServerMsg", function (type, message, uid) {
         // user is banned
         console.error("User was found on the banlist");
         isBanned = true;
-        connection.off();
+        connection.stop();
+        connection = null;
         document.getElementById("conState").textContent = "[Disconnected!]";
         document.getElementById("conState").style.color = "red";
         document.getElementById("messageInput").value = "You are banned!";
@@ -197,10 +198,10 @@ document.getElementById("sendButton").addEventListener("click", async function (
         messageFbDom.classList.remove("invalid-feedback", "valid-feedback");
         messageFbDom.innerHTML = "";
     }
-    if (user.length > 20) {
+    if (user.length > api_status["userCharLimit"]) {
         userDom.classList.add("is-invalid");
         userFbDom.classList.add("invalid-feedback");
-        userFbDom.innerHTML = "Your username cannot be more than 20 characters!";
+        userFbDom.innerHTML = "Your username cannot be more than " + api_status["userCharLimit"] + " characters!";
         return;
     } else {
         // clear feedbacks
@@ -211,10 +212,10 @@ document.getElementById("sendButton").addEventListener("click", async function (
         messageFbDom.classList.remove("invalid-feedback", "valid-feedback");
         messageFbDom.innerHTML = "";
     }
-    if (message.length > 200) {
+    if (message.length > api_status["messageCharLimit"]) {
         messageDom.classList.add("is-invalid");
         messageFbDom.classList.add("invalid-feedback");
-        messageFbDom.innerHTML = "Your message cannot be more than 200 characters!";
+        messageFbDom.innerHTML = "Your message cannot be more than " + api_status["messageCharLimit"] + " characters!";
         return;
     } else {
         // clear feedbacks
