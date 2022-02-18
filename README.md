@@ -44,13 +44,13 @@ Please navigate to the wiki to see how to configure EZchat.
 ## Windows (win-x64)
 
 - Open the `publish` folder
-- **Run `ezchatv2.exe` as Administrator**
+- **Run `ezchatv2.exe`**
 
 ## Linux (linux-x64) & Linux ARM (linux-arm)
 
 - Open the `publish` folder
 - In terminal, run `sudo chmod +x ezchatv2`
-- **In terminal, run `sudo ./ezchatv2`**
+- **In terminal, run `./ezchatv2`**
 
 ---
 
