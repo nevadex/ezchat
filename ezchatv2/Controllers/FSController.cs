@@ -60,7 +60,7 @@ namespace ezchatv2.Controllers
                 return BadRequest();
             }*/
             string uploader = "unknown";
-            if (Request.Headers.ContainsKey("uid") && string.IsNullOrWhiteSpace(Request.Headers["uid"])) { uploader = Request.Headers["uid"]; }
+            if (Request.Headers.ContainsKey("uid") && !string.IsNullOrWhiteSpace(Request.Headers["uid"])) { uploader = Request.Headers["uid"]; }
 
             try
             {

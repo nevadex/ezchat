@@ -159,6 +159,8 @@ fetch(c_apiUrl + "/status")
         console.log("[INIT] loaded Api_Status");
     });
 
+
+
 asyncInit();
 
 function refreshConnectionState() {

@@ -78,7 +78,7 @@ adminUids = ["admin_uid1", "admin_uid2", "PkRlns8WAZpwRjzQpDXjcA"]
 
 # use ?admin=true attribute
 # HUGE SECURITY PROBLEM
-useAdminAttribute = true
+useAdminAttribute = false
 
 
 

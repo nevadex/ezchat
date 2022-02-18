@@ -14,8 +14,7 @@ namespace ezchatv2.Hubs
         public async Task SendMessage(string user, string message)
         {
             // check for uid
-            if (!Context.Items.TryGetValue("uid", out object value))
-            { Context.Abort(); return; }
+            if (!Context.Items.TryGetValue("uid", out object value)) { Context.Abort(); return; }
 
             // validation
             if (user.Contains(" ")) { Context.Abort(); return; }
@@ -26,20 +25,20 @@ namespace ezchatv2.Hubs
 
             msg x = new msg { };
             // update name if changed
-            foreach (msg i in ppcontext.contextedUsers)
+            foreach (msg i in ChatContext.contextedUsers)
             {
                 if (i.message == Context.ConnectionId)
                 {
                     x = new msg {user = user, uid = i.uid, message = i.message};
-                    ppcontext.contextedUsers.Remove(i);
+                    ChatContext.contextedUsers.Remove(i);
                     break;
                 }
             }
-            ppcontext.contextedUsers.Add(x);
+            ChatContext.contextedUsers.Add(x);
             // refresh clientList
-            string clientListMsg = ppcontext.ConnectedIds.Count.ToString();
+            string clientListMsg = ChatContext.ConnectedIds.Count.ToString();
             // ¶
-            foreach (msg i in ppcontext.contextedUsers)
+            foreach (msg i in ChatContext.contextedUsers)
             {
                 string v = " " + i.uid + "¶" + i.user;
                 clientListMsg = clientListMsg + v;
@@ -47,7 +46,7 @@ namespace ezchatv2.Hubs
             await Clients.All.SendAsync("ServerMsg", "clientList", clientListMsg, "SERVER");
 
             // message delivery
-            if (ppcontext.paused == false)
+            if (ChatContext.paused == false)
             {
                 await Clients.All.SendAsync("ReceiveMessage", user, message, Context.Items["uid"]);
                 Console.WriteLine("<" + user + "/" + Context.Items["uid"] + "> " + message);
@@ -56,12 +55,12 @@ namespace ezchatv2.Hubs
                 File.WriteAllText(path, text);
 
                 msg cMsg = new msg { user = user, message = message, uid = Context.Items["uid"].ToString() };
-                ppcontext.recentMsgs.Add(cMsg);
-                if (ppcontext.recentMsgs.Count > ChatConfig.configTable["basic"]["recentMsgs"])
+                ChatContext.recentMsgs.Add(cMsg);
+                if (ChatContext.recentMsgs.Count > ChatConfig.configTable["basic"]["recentMsgs"])
                 {
-                    while (ppcontext.recentMsgs.Count > ChatConfig.configTable["basic"]["recentMsgs"])
+                    while (ChatContext.recentMsgs.Count > ChatConfig.configTable["basic"]["recentMsgs"])
                     {
-                        ppcontext.recentMsgs.RemoveAt(0);
+                        ChatContext.recentMsgs.RemoveAt(0);
                     }
                 }
             }
@@ -93,17 +92,17 @@ namespace ezchatv2.Hubs
             //System.Diagnostics.Debug.WriteLine(Context.Items["uid"]);
 
             // add user to contexted users
-            ppcontext.contextedUsers.Add(new msg {uid = uid, user = user, message = Context.ConnectionId});
-            string clientListMsg = ppcontext.ConnectedIds.Count.ToString();
+            ChatContext.contextedUsers.Add(new msg {uid = uid, user = user, message = Context.ConnectionId});
+            string clientListMsg = ChatContext.ConnectedIds.Count.ToString();
             // ¶
-            foreach (msg i in ppcontext.contextedUsers)
+            foreach (msg i in ChatContext.contextedUsers)
             {
                 string v = " " + i.uid + "¶" + i.user;
                 clientListMsg = clientListMsg + v;
             }
             await Clients.All.SendAsync("ServerMsg", "clientList", clientListMsg, "SERVER");
 
-            foreach (msg i in ppcontext.recentMsgs)
+            foreach (msg i in ChatContext.recentMsgs)
             {
                 await Clients.Caller.SendAsync("ReceiveMessage", i.user, i.message, i.uid);
             }
@@ -125,6 +124,9 @@ namespace ezchatv2.Hubs
 
         public async Task ServerMsg(string type, string message, string uid)
         {
+            // check for uid
+            if (!Context.Items.TryGetValue("uid", out object value)) { Context.Abort(); return; }
+
             // server messenger
             // usable types: 
             if (true)
@@ -135,6 +137,9 @@ namespace ezchatv2.Hubs
 
         public async Task AdminMsg(string type, string message, string uid)
         {
+            // check for uid
+            if (!Context.Items.TryGetValue("uid", out object value)) { Context.Abort(); return; }
+
             // verify if user is admin
             if (Context.Items["admin"].ToString() == "true" && Context.Items["uid"].ToString() == uid)
             { }
@@ -153,7 +158,7 @@ namespace ezchatv2.Hubs
 
                 string bannedConID = "";
                 // find user
-                foreach (msg i in ppcontext.contextedUsers)
+                foreach (msg i in ChatContext.contextedUsers)
                 {
                     if (i.uid == message)
                     {
@@ -197,9 +202,9 @@ namespace ezchatv2.Hubs
             }
             else if (type == "clearCache")
             {
-                while (ppcontext.recentMsgs.Count != 0)
+                while (ChatContext.recentMsgs.Count != 0)
                 {
-                    ppcontext.recentMsgs.RemoveAt(0);
+                    ChatContext.recentMsgs.RemoveAt(0);
                 }
             }
             else if (type == "reloadConfig")
@@ -217,8 +222,8 @@ namespace ezchatv2.Hubs
             }
             else if (type == "pauseChat")
             {
-                ppcontext.paused = !ppcontext.paused;
-                Console.WriteLine(uid + " set pause to " + ppcontext.paused.ToString());
+                ChatContext.paused = !ChatContext.paused;
+                Console.WriteLine(uid + " set pause to " + ChatContext.paused.ToString());
             }
             else if (type == "stopChat")
             {
@@ -231,34 +236,34 @@ namespace ezchatv2.Hubs
 
         public override Task OnConnectedAsync()
         {
-            ppcontext.ConnectedIds.Add(Context.ConnectionId);
-            System.Diagnostics.Debug.WriteLine("total connected users: " + ppcontext.ConnectedIds.Count);
+            ChatContext.ConnectedIds.Add(Context.ConnectionId);
+            System.Diagnostics.Debug.WriteLine("total connected users: " + ChatContext.ConnectedIds.Count);
             return base.OnConnectedAsync();
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            ppcontext.ConnectedIds.Remove(Context.ConnectionId);
+            ChatContext.ConnectedIds.Remove(Context.ConnectionId);
 
-            foreach (msg i in ppcontext.contextedUsers)
+            foreach (msg i in ChatContext.contextedUsers)
             {
                 if (i.uid == Context.Items["uid"].ToString())
                 {
-                    ppcontext.contextedUsers.Remove(i);
+                    ChatContext.contextedUsers.Remove(i);
                     break;
                 }
             }
 
-            string clientListMsg = ppcontext.ConnectedIds.Count.ToString();
+            string clientListMsg = ChatContext.ConnectedIds.Count.ToString();
             // ¶
-            foreach (msg i in ppcontext.contextedUsers)
+            foreach (msg i in ChatContext.contextedUsers)
             {
                 string v = " " + i.uid + "¶" + i.user;
                 clientListMsg = clientListMsg + v;
             }
             Clients.All.SendAsync("ServerMsg", "clientList", clientListMsg, "SERVER");
 
-            System.Diagnostics.Debug.WriteLine("total connected users: " + ppcontext.ConnectedIds.Count);
+            System.Diagnostics.Debug.WriteLine("total connected users: " + ChatContext.ConnectedIds.Count);
             return base.OnDisconnectedAsync(exception);
         }
     }
@@ -273,7 +278,7 @@ namespace ezchatv2.Hubs
     /// <summary>
     /// A state/context class for chat operation
     /// </summary>
-    public class ppcontext
+    public class ChatContext
     {
         public static List<msg> recentMsgs = new List<msg>();
         public static HashSet<string> ConnectedIds = new HashSet<string>();

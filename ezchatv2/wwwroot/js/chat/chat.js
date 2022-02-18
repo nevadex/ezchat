@@ -35,7 +35,6 @@ connection.on("ReceiveMessage", function (user, message, uid) {
     li.dataset.uid = uid;
     li.dataset.user = user;
     li.dataset.raw = message
-    document.getElementById("messagesList").appendChild(li);
     // dont change, could allow script injection
     //li.textContent = `<${user}> ${message}`;
 
@@ -48,7 +47,7 @@ connection.on("ReceiveMessage", function (user, message, uid) {
     for (let i = 0; i < rawMsgSections.length; i++) {
         var validator = document.createElement("a");
         validator.href = rawMsgSections[i];
-        if (validator.host != document.location.host) {
+        if (validator.host != document.location.host || rawMsgSections[i].includes(document.location.host)) {
             var protsec = validator.href.split(":");
             if ((protsec[0] == "http" || protsec[0] == "https") && (protsec[1].charAt(0) == "/" && protsec[1].charAt(1) == "/")) {
                 msgSections.push(new MsgTextSel(rawMsgSections[i], true));
@@ -89,8 +88,35 @@ connection.on("ReceiveMessage", function (user, message, uid) {
 
     // render compile
     li.innerText = `<${checkedUser}> `;
+    var fileRenderer = document.createElement("div");
+    var hasFiles = false;
     for (let i = 0; i < msgSections.length; i++) {
         if (msgSections[i].isLink) {
+            // get file ext in case of img
+            var fileExt = msgSections[i].text;
+            fileExt = getFileExtention(fileExt);
+            if (fileExt.includes("?")) {
+                fileExt = fileExt.split("?")[0];      
+            }
+            if (fileExt.charAt(fileExt.length - 1) == "/") {
+                fileExt = fileExt.substring(0, fileExt.length - 1);
+            }
+            // image
+            if (fs_status["displayImages"]) {
+                if (fs_status["imageExts"].includes(fileExt)) {
+                    hasFiles = true;
+                    var img = document.createElement("img");
+                    img.src = msgSections[i].text;
+                    img.style.maxWidth = "40%";
+                    img.style.maxHeight = "40%";
+                    img.style.marginTop = "5px";
+                    img.style.marginBottom = "5px";
+                    img.style.marginRight = "5px";
+                    //img.style.outline = "2px outset #17A2B8";
+                    fileRenderer.appendChild(img);
+                }
+            }
+
             var a = document.createElement("a");
             a.href = `${msgSections[i].text}`;
             a.innerHTML = `${msgSections[i].text}`;
@@ -104,7 +130,11 @@ connection.on("ReceiveMessage", function (user, message, uid) {
         }
     }
 
+    if (hasFiles) {
+        li.appendChild(fileRenderer);
+    }
     li.dataset.raw = li.innerHTML
+    document.getElementById("messagesList").appendChild(li);
     //li.textContent = `<${checkedUser}> ${checkedMessage}`;
 });
 
@@ -122,14 +152,15 @@ connection.on("ServerMsg", function (type, message, uid) {
         array.forEach(function (item, index) {
             var userdata = item.split("¶");
             // mark an online user as you when it is you
-            var marker = "";
+            //var marker = "";
+            var str = "";
             if (userdata[0] == uidCookie) {
-                marker = "(you!)";
+                //marker = "(you!)";
+                str = " <i>" + userdata[1] + "</i>";
+            } else {
+                str = " " + userdata[1];
             }
-            // uid/user
-            //var str = " " + userdata[0] + "/" + userdata[1] + marker;
-            // user
-            var str = " " + userdata[1] + marker;
+            //var str = " " + userdata[1] + marker;
             clientListStr = clientListStr + str;
 
             // admin panel list
@@ -137,7 +168,7 @@ connection.on("ServerMsg", function (type, message, uid) {
             admin_clientListStr = admin_clientListStr + str2;
 
         });
-        clientList.textContent = clientListStr;
+        clientList.innerHTML = clientListStr;
         document.getElementById("admin-clientList").textContent = admin_clientListStr;
     }
     else if (type == "banMsg") {

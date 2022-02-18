@@ -82,3 +82,8 @@ div.loading-overlay {
     left: 0;
     position: fixed;
 }
+
+/*disable gray link color in bootstrap-dark*/
+.bootstrap-dark a {
+    color: #0366d6;
+}

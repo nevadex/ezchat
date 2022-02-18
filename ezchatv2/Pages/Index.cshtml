@@ -93,15 +93,15 @@
                                     </div>
                                 </div>
                                 <div class="row"><br /></div>
-                                <div class="row" id="clearMsgDiv">
-                                    <input type="button" class="btn btn-outline-warning" id="clearMsgList" value="Clear Messages" />
-                                </div>
-                                <div class="row"><br /></div>
                                 <div class="row">
                                     <div class="custom-control custom-switch" id="darkModeDiv">
                                         <input type="checkbox" class="custom-control-input" id="darkMode">
                                         <label class="custom-control-label" for="darkMode">Dark Mode</label>
                                     </div>
+                                </div>
+                                <div class="row"><br /></div>
+                                <div class="row" id="clearMsgDiv">
+                                    <input type="button" class="btn btn-outline-warning" id="clearMsgList" value="Clear Messages" />
                                 </div>
                                 <div class="row"><br /></div>
                             </div>
@@ -162,10 +162,10 @@
 </div>
 
 
-<div class="row">
+<div id="messagesListMainDiv" class="row" style="margin-bottom:60px;">
     <div class="">
         <div id="messagesListDiv" style="display: flex; flex-direction: column;">
-            <ul id="messagesList" style="flex-grow: 1; overflow: auto;"></ul>
+            <ul id="messagesList" style="flex-grow: 1;"></ul>
         </div>
     </div>
 </div>
