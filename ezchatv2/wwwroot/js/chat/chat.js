@@ -103,17 +103,39 @@ connection.on("ReceiveMessage", function (user, message, uid) {
             }
             // image
             if (fs_status["displayImages"]) {
-                if (fs_status["imageExts"].includes(fileExt)) {
+                if (imageFormats.includes(fileExt)) {
                     hasFiles = true;
                     var img = document.createElement("img");
                     img.src = msgSections[i].text;
-                    img.style.maxWidth = "40%";
-                    img.style.maxHeight = "40%";
+                    img.style.maxWidth = "50%";
+                    img.style.maxHeight = "50%";
                     img.style.marginTop = "5px";
                     img.style.marginBottom = "5px";
                     img.style.marginRight = "5px";
                     //img.style.outline = "2px outset #17A2B8";
                     fileRenderer.appendChild(img);
+                }
+            }
+            // video
+            if (fs_status["displayImages"]) {
+                if (videoFormats.includes(fileExt)) {
+                    hasFiles = true;
+                    var video = document.createElement("video");
+                    video.style.maxWidth = "30%";
+                    video.style.maxHeight = "30%";
+                    video.style.marginTop = "5px";
+                    video.style.marginBottom = "5px";
+                    video.style.marginRight = "5px";
+                    video.controls = "controls";
+                    video.preload = "metadata";
+                    var src = document.createElement("source");
+                    src.src = msgSections[i].text;
+                    var error = document.createElement("p");
+                    error.classList.add("text-warning");
+                    error.innerHTML = "Unable to display video.";
+                    video.appendChild(src);
+                    video.appendChild(error);
+                    fileRenderer.appendChild(video);
                 }
             }
 

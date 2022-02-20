@@ -41,16 +41,15 @@ messageCharLimit = 200
 fileSystem = true
 
 # accepted file extensions
-filterFileExts = true
+filterFileExts = false
 allowedFileExts = [".png", ".jpg", ".jpeg"]
 
 # included file extensions in the blocked list will be blocked
 # no matter the value of filterFileExts
 blockedFileExts = [".exe", ".php"]
 
-# auto display images
+# auto display images and videos
 autoDisplayImages = true
-imageFileExts = [".png", ".jpg", ".jpeg"]
 
 # file storage directory
 # REMOVE EXECUTE PERMISSIONS FROM THIS FOLDER

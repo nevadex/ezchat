@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using LiteDB;
+using Tommy;
 
 namespace ezchatv2.Models
 {
@@ -14,13 +15,11 @@ namespace ezchatv2.Models
         public List<string> acceptedExts { get; set; }
         public List<string> blockedExts { get; set; }
         public bool displayImages { get; set; }
-        public List<string> imageExts { get; set; }
 
         public FS_Status()
         {
             acceptedExts = new List<string>();
             blockedExts = new List<string>();
-            imageExts = new List<string>();
         }
     }
 
@@ -56,6 +55,17 @@ namespace ezchatv2.Models
             {
                 return null;
             }
+        }
+
+        public static FS_Status GenerateStatus()
+        {
+            FS_Status status = new FS_Status();
+            status.enabled = ChatConfig.configTable["fs"]["fileSystem"];
+            status.filterExts = ChatConfig.configTable["fs"]["filterFileExts"];
+            foreach (TomlNode i in ChatConfig.configTable["fs"]["allowedFileExts"]) { status.acceptedExts.Add(i); }
+            foreach (TomlNode i in ChatConfig.configTable["fs"]["blockedFileExts"]) { status.blockedExts.Add(i); }
+            status.displayImages = ChatConfig.configTable["fs"]["autoDisplayImages"];
+            return status;
         }
     }
 }

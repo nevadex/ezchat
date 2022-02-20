@@ -3,6 +3,10 @@
 // ezchat v2.8 / filesystem script
 // made by nevadex (c) 2022
 
+// formats
+var imageFormats = [".apng", ".avif", ".gif", ".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".png", ".svg", ".webp"];
+var videoFormats = [".ogg", ".mp4", ".webm"];
+
 function dragOverHandler(ev) {
     if (fs_status["enabled"] == true) {
         ev.preventDefault();
@@ -17,6 +21,15 @@ function getFileExtention(fileName) {
     }
     return "." + ext;
 }
+
+document.getElementById("messageInput").addEventListener("paste", function (event) {
+    if (event.clipboardData.files.length > 0) {
+        for (let i = 0; i < event.clipboardData.files.length; i++) {
+            var file = event.clipboardData.files[i];
+            queueFileUpload(file, file.name);
+        }
+    }
+});
 
 function uploadFileHandler(ev) {
     ev.preventDefault();
@@ -76,23 +89,17 @@ function queueFileUpload(file, fileName) {
     var accepted = false;
     var blocked = false;
     // accepted exts
-    for (let i = 0; i < acceptedExts.length; i++) {
-        if (fileExt == acceptedExts[i]) {
-            accepted = true;
-            break;
-        }
+    if (acceptedExts.includes(fileExt) && fs_status["filterExts"]) {
+        accepted = true;
+    } else if (!fs_status["filterExts"]) {
+        accepted = true
     }
     // blocked exts
-    if (accepted == false) {
-        for (let i = 0; i < blockedExts.length; i++) {
-            if (fileExt == blockedExts[i]) {
-                blocked = true;
-                break;
-            }
-        }
+    if (blockedExts.includes(fileExt)) {
+        blocked = true;
     }
 
-    if (accepted) {
+    if (accepted && !blocked) {
         fileFeedback.innerHTML = "";
         fileFeedback.style.display = "none";
 
@@ -121,18 +128,39 @@ function queueFileUpload(file, fileName) {
 
         var cardbody = document.createElement("div");
         cardbody.classList.add("card-body");
-        var img = document.createElement("img");
-        img.src = URL.createObjectURL(file);
-        img.style.maxHeight = "100%";
-        img.style.maxWidth = "100%";
-        cardbody.appendChild(img);
+        if (imageFormats.includes(fileExt)) {
+            var img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.style.maxHeight = "100%";
+            img.style.maxWidth = "100%";
+            cardbody.appendChild(img);
+        } else if (videoFormats.includes(fileExt)) {
+            var video = document.createElement("video");
+            video.style.maxHeight = "100%";
+            video.style.maxWidth = "100%";
+            video.controls = "controls";
+            video.preload = "auto";
+            var src = document.createElement("source");
+            src.src = URL.createObjectURL(file);
+            var error = document.createElement("p");
+            error.classList.add("text-warning");
+            error.innerHTML = "Unable to display video.";
+            video.appendChild(src);
+            video.appendChild(error);
+            cardbody.appendChild(video);
+        } else {
+            var error = document.createElement("p");
+            error.classList.add("text-warning");
+            error.innerHTML = "Unable to display file.";
+            cardbody.appendChild(error);
+        }
         carddiv.appendChild(cardbody);
 
         maindiv.appendChild(carddiv);
     }
     else {
         fileFeedback.onclick = function () { document.getElementById("fileUploadFeedback").innerHTML = ""; document.getElementById("fileUploadFeedback").style.display = "none"; };
-        if (!blocked) { fileFeedback.innerHTML = "Files of type " + fileExt + " are not accepted. <u>Hide</u>"; }
+        if (!blocked && fs_status["filterExts"]) { fileFeedback.innerHTML = "Files of type " + fileExt + " are not accepted. <u>Hide</u>"; }
         else { fileFeedback.innerHTML = "Files of type " + fileExt + " are blocked. <u>Hide</u>"; }
         fileFeedback.style.display = "block";
     }

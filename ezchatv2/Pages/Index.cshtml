@@ -2,10 +2,31 @@
 @model IndexModel
 <head>
     <title>@ViewData["siteTitle"]</title>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            if (document.getElementById("loadingOverlayImg").naturalWidth == 0) {
+                var overlay = document.createElement("div");
+                overlay.style.opacity = 1;
+                overlay.style.filter = "alpha(opacity=20)";
+                overlay.style.backgroundColor = "#224848";
+                overlay.style.width = "100%";
+                overlay.style.height = "100%";
+                overlay.style.zIndex = 100;
+                overlay.style.top = 0;
+                overlay.style.left = 0;
+                overlay.style.position = "fixed";
+
+                overlay.innerHTML = "<p style=\"position: absolute; bottom: 0; left: 10px; margin: auto;\">\${c_ver} &copy; Nevadex 2022</p> <p style=\"position: absolute; bottom: 0; right: 10px; margin: auto; color: red;\">Error: failed to load resources</p>";
+
+                document.body.appendChild(overlay);
+            }
+        });
+    </script>
 </head>
 
-<div class="loading-overlay" id="loadingOverlay">
-    <img src="~/assets/ezchat_logo_dark.jpg" alt="ezchat is loading" style="position:absolute; top:0; bottom:0; left:0; right:0; margin:auto; width:15%;" />
+<div class="loading-overlay" id="loadingOverlay" style="background-color: #224848;">
+    <img id="loadingOverlayImg" src="~/assets/ezchat_logo_dark.jpg" alt="ezchat is loading" style="position:absolute; top:0; bottom:0; left:0; right:0; margin:auto; width:15%;" />
     <p style="position: absolute; bottom: 0; left: 10px; margin: auto;">@ViewData["version"] &copy; Nevadex 2022</p>
     <p style="position: absolute; bottom: 0; right: 10px; margin: auto;">loading..</p>
 </div>

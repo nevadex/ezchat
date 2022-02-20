@@ -28,17 +28,7 @@ namespace ezchatv2.Controllers
         public async Task<IActionResult> Status()
 #pragma warning restore CS1998
         {
-            FS_Status status = new FS_Status();
-            status.enabled = ChatConfig.configTable["fs"]["fileSystem"];
-            status.filterExts = ChatConfig.configTable["fs"]["filterFileExts"];
-            foreach (TomlNode i in ChatConfig.configTable["fs"]["allowedFileExts"]) { status.acceptedExts.Add(i); }
-            foreach (TomlNode i in ChatConfig.configTable["fs"]["blockedFileExts"]) { status.blockedExts.Add(i); }
-            status.displayImages = ChatConfig.configTable["fs"]["autoDisplayImages"];
-            foreach (TomlNode i in ChatConfig.configTable["fs"]["imageFileExts"]) { status.imageExts.Add(i); }
-
-            string jsonstring = JsonConvert.SerializeObject(status, Formatting.None);
-
-            return Ok(jsonstring);
+            return Ok(JsonConvert.SerializeObject(FSMethods.GenerateStatus(), Formatting.None));
         }
 
         [HttpPost]
@@ -48,22 +38,12 @@ namespace ezchatv2.Controllers
         // due to restrictions, all requests have a hardware limit of 2.14 GB
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            /*try
-            {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", file.FileName);
-                var stream = new FileStream(path, FileMode.Create);
-                await file.CopyToAsync(stream);
-                return Ok(new { length = file.Length, name = file.FileName });
-            }
-            catch
-            {
-                return BadRequest();
-            }*/
-            string uploader = "unknown";
-            if (Request.Headers.ContainsKey("uid") && !string.IsNullOrWhiteSpace(Request.Headers["uid"])) { uploader = Request.Headers["uid"]; }
-
+            
             try
             {
+                string uploader = "unknown";
+                if (Request.Headers.ContainsKey("uid") && !string.IsNullOrWhiteSpace(Request.Headers["uid"])) { uploader = Request.Headers["uid"]; }
+
                 Util.VerboseConsole("[FS] " + "file named [" + file.FileName + "] [" + (file.Length / 1000000).ToString() + " MB] from uid [" + uploader + "]", "[FS] file upload attempt from [" + Request.Headers["uid"] + "]");
 
                 FS_UploadResponse response = new FS_UploadResponse();
@@ -87,7 +67,7 @@ namespace ezchatv2.Controllers
                 stream.Close();
                 Util.VerboseConsole("[FS] " + file.FileName + ": uploaded to [" + "test" + FSMethods.GetFileExtension(file.FileName) + "]");
 
-                response.url = "fs/download/?name=none.none";
+                response.url = "fs/download/?name=test.png";
                 Util.VerboseConsole("[FS] url generated: [" + response.url + "]");
                 response.message = "success";
                 string jsonstring = JsonConvert.SerializeObject(response, Formatting.None);
