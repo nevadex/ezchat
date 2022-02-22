@@ -67,7 +67,7 @@ namespace ezchatv2.Controllers
                 stream.Close();
                 Util.VerboseConsole("[FS] " + file.FileName + ": uploaded to [" + "test" + FSMethods.GetFileExtension(file.FileName) + "]");
 
-                response.url = "fs/download/?name=test.png";
+                response.url = "fs/download/test.png";
                 Util.VerboseConsole("[FS] url generated: [" + response.url + "]");
                 response.message = "success";
                 string jsonstring = JsonConvert.SerializeObject(response, Formatting.None);
@@ -79,7 +79,7 @@ namespace ezchatv2.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("{name}")]
         public async Task<ActionResult> Download(string name)
         {
             // validation

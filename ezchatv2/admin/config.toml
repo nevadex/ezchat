@@ -42,11 +42,11 @@ fileSystem = true
 
 # accepted file extensions
 filterFileExts = false
-allowedFileExts = [".png", ".jpg", ".jpeg"]
+allowedFileExts = [".apng", ".avif", ".gif", ".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".png", ".svg", ".webp", ".ogg", ".mp4", ".webm"]
 
-# included file extensions in the blocked list will be blocked
+# file extensions in the blocked list will be blocked
 # no matter the value of filterFileExts
-blockedFileExts = [".exe", ".php"]
+blockedFileExts = [".exe", ".php", "", ".bin"]
 
 # auto display images and videos
 autoDisplayImages = true

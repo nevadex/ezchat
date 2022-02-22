@@ -35,10 +35,19 @@ namespace ezchatv2.Models
         public int bsonId { get; set; } // bson id when put in db
         public int fileId { get; set; } // index of file list
         public string uploader { get; set; } // uid/user who uploaded file
+        public DateTime uploadTime { get; set; } // time of upload
         public string displayName { get; set; } // original file name without ext
         public string fileName { get; set; } // stored file name, changed in config opt "secureFileNames"
         // format: regular=displayName.fileExt secure=fileId.fileExt.ezfs
-        public string fileExt { get; set; }
+        public string fileExt { get; set; } // file extension
+
+        public FS_FileRecord(string fileDisplayName, string uploaderUID)
+        {
+            uploader = uploaderUID;
+            uploadTime = DateTime.Now;
+            displayName = fileDisplayName;
+            fileExt = FSMethods.GetFileExtension(fileDisplayName);
+        }
     }
 
     public class FSMethods
@@ -49,6 +58,10 @@ namespace ezchatv2.Models
             {
                 string[] sections = filename.Split(".");
                 string ext = sections[sections.Length - 1];
+                if (ext == filename)
+                {
+                    return "";
+                }
                 return "." + ext;
             }
             catch
