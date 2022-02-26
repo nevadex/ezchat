@@ -62,10 +62,10 @@ fileSizeLimit = 8
 # max number of stored files
 # note: changing value to less that it was will not delete files
 # set to 0 to store infinite files
-maxFiles = 0
+maxFiles = 20
 
 # set stored file names to a secure name rather than the display name
-secureFileNames = true
+secureFileNames = false
 
 
 

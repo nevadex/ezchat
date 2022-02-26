@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.SignalR;
 using Tommy;
 using System.IO;
 using System.Net.Http;
+using ezchatv2.Models;
 
 namespace ezchatv2
 {
@@ -17,7 +18,7 @@ namespace ezchatv2
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Initializing...");
+            Util.Print("Initializing...");
 
             StreamReader tomlreader = File.OpenText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.config_file));
             ChatConfig.configTable = TOML.Parse(tomlreader);
@@ -28,11 +29,12 @@ namespace ezchatv2
             foreach (string i in args)
             {
                 if (i.IndexOf("-skipAC", StringComparison.OrdinalIgnoreCase) >= 0) { ChatConfig.a_skipAppcheck = true; continue; }
-                if (i.IndexOf("-v", StringComparison.OrdinalIgnoreCase) >= 0 || i.IndexOf("-verbose", StringComparison.OrdinalIgnoreCase) >= 0) { ChatConfig.a_Verbose = true; Console.WriteLine("using verbose logging"); continue; }
-                if (i.IndexOf("-h", StringComparison.OrdinalIgnoreCase) >= 0 || i.IndexOf("-help", StringComparison.OrdinalIgnoreCase) >= 0) { Console.WriteLine(ChatConfig.a_HelpText); Environment.Exit(0); continue; }
+                if (i.IndexOf("-v", StringComparison.OrdinalIgnoreCase) >= 0 || i.IndexOf("-verbose", StringComparison.OrdinalIgnoreCase) >= 0) { ChatConfig.a_Verbose = true; Util.Print("using verbose logging"); continue; }
+                if (i.IndexOf("-h", StringComparison.OrdinalIgnoreCase) >= 0 || i.IndexOf("-help", StringComparison.OrdinalIgnoreCase) >= 0) { Util.Print(ChatConfig.a_HelpText); Environment.Exit(0); continue; }
+                if (i.IndexOf("-resetFS", StringComparison.OrdinalIgnoreCase) >= 0) { FSMethods.ResetFS(); continue; }
 
                 // all else fails
-                Console.WriteLine("unknown argument \"" + i + "\", skipping");
+                Util.Print("unknown argument \"" + i + "\", skipping");
             }
 
             // appcheck
@@ -52,30 +54,30 @@ namespace ezchatv2
                     // check version
                     if (new_ver > ChatConfig.raw_version)
                     {
-                        Console.WriteLine("EZchat {0} is outdated. Please update to EZchat {1}.", ChatConfig.raw_version.ToString(), values[0]);
+                        Util.Print("EZchat " + ChatConfig.raw_version.ToString() + " is outdated. Please update to EZchat " + values[0]);
                         if (ChatConfig.raw_version < bcv)
                         {
-                            Console.WriteLine("EZchat {0} is not compatible with your current configuration.", values[0]);
+                            Util.Print("EZchat " + values[0] + " is not compatible with your current configuration.");
                         }
-                        Console.WriteLine("Download EZchat {0} from here: {1}", values[0], values[2]);
+                        Util.Print("Download EZchat " + values[0] + " from here: " + values[2]);
                     }
 
                     // alerts
                     if (values[3] != "none\n")
                     {
-                        Console.WriteLine("Alerts: " + values[3]);
+                        Util.Print("Alerts: " + values[3]);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Could not verify appcheck, shutting down.\n");
-                    Console.WriteLine(ex.ToString());
+                    Util.Print("Could not verify appcheck, shutting down.\n");
+                    Util.Print(ex.ToString());
                     Environment.Exit(-1);
                     return;
                 }
             }
             else
-            { Console.WriteLine("skipping appcheck"); }
+            { Util.Print("skipping appcheck"); }
 
 
             //CreateHostBuilder(args).Build().Run();
@@ -111,7 +113,7 @@ namespace ezchatv2
         public static readonly string appcheck_url = "https://raw.githubusercontent.com/nevadex/ezchat/master/repo/appcheck";
 
         // args
-        public static readonly string a_HelpText = "Help Text\nGo to https://github.com/nevadex/ezchat/wiki for more information.\n\nArgument|Explanation\n-help OR -h|Opens the help text\n-skipAC|Skips appcheck during initialization\n-v OR -verbose|Starts verbose logging mode";
+        public static readonly string a_HelpText = "Help Text\nGo to https://github.com/nevadex/ezchat/wiki for more information.\n\nArgument|Explanation\n-help OR -h|Opens the help text\n-skipAC|Skips appcheck during initialization\n-v OR -verbose|Starts verbose logging mode\n-resetFS|Resets the file system";
         public static bool a_Verbose = false;
         public static bool a_skipAppcheck = false;
     }
@@ -130,11 +132,11 @@ namespace ezchatv2
         {
             if (ChatConfig.a_Verbose)
             {
-                Console.WriteLine("v"+text);
+                Console.WriteLine("v" + text);
             }
             else if (System.Diagnostics.Debugger.IsAttached)
             {
-                System.Diagnostics.Debug.WriteLine("d"+text);
+                System.Diagnostics.Debug.WriteLine("d" + text);
             }
         }
 
@@ -148,15 +150,27 @@ namespace ezchatv2
         {
             if (ChatConfig.a_Verbose)
             {
-                Console.WriteLine("v"+vtext);
+                Console.WriteLine("v" + vtext);
             }
             else if (System.Diagnostics.Debugger.IsAttached)
             {
-                System.Diagnostics.Debug.WriteLine("d"+vtext);
+                System.Diagnostics.Debug.WriteLine("d" + vtext);
             }
             else
             {
                 Console.WriteLine(ctext);
+            }
+        }
+
+        public static void Print(string text)
+        {
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Diagnostics.Debug.WriteLine(text);
+            }
+            else
+            {
+                Console.WriteLine(text);
             }
         }
     }

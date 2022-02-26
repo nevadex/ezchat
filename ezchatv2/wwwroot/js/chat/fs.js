@@ -86,6 +86,7 @@ function queueFileUpload(file, fileName) {
     var acceptedExts = fs_status["acceptedExts"];
     var blockedExts = fs_status["blockedExts"];
     var fileExt = getFileExtention(fileName);
+    var fileSizeValid = true;
     var accepted = false;
     var blocked = false;
     // accepted exts
@@ -98,8 +99,12 @@ function queueFileUpload(file, fileName) {
     if (blockedExts.includes(fileExt)) {
         blocked = true;
     }
+    // file size
+    if (file.size > (fs_status["maxFileSizeMB"] * 1000000)) {
+        fileSizeValid = false;
+    }
 
-    if (accepted && !blocked) {
+    if (accepted && fileSizeValid && !blocked) {
         fileFeedback.innerHTML = "";
         fileFeedback.style.display = "none";
 
@@ -160,8 +165,12 @@ function queueFileUpload(file, fileName) {
     }
     else {
         fileFeedback.onclick = function () { document.getElementById("fileUploadFeedback").innerHTML = ""; document.getElementById("fileUploadFeedback").style.display = "none"; };
-        if (!blocked && fs_status["filterExts"]) { fileFeedback.innerHTML = "Files of type " + fileExt + " are not accepted. <u>Hide</u>"; }
-        else { fileFeedback.innerHTML = "Files of type " + fileExt + " are blocked. <u>Hide</u>"; }
+        
+        
+        if (blocked) { fileFeedback.innerHTML = "Files of type " + fileExt + " are blocked. <u>Hide</u>"; }
+        else if (!blocked && fs_status["filterExts"]) { fileFeedback.innerHTML = "Files of type " + fileExt + " are not accepted. <u>Hide</u>"; }
+        else if (!fileSizeValid) { fileFeedback.innerHTML = "File too large! Limit: " + fs_status["maxFileSizeMB"] + ".0MB, Your file: " + (file.size / 1000000).toFixed(1).toString() + "MB <u>Hide</u>"; }
+        else { fileFeedback.innerHTML = blocked + "|" + accepted + "|" + fileSizeValid}
         fileFeedback.style.display = "block";
     }
 }

@@ -49,7 +49,7 @@ namespace ezchatv2.Hubs
             if (ChatContext.paused == false)
             {
                 await Clients.All.SendAsync("ReceiveMessage", user, message, Context.Items["uid"]);
-                Console.WriteLine("<" + user + "/" + Context.Items["uid"] + "> " + message);
+                Util.Print("[CH] <" + user + "/" + Context.Items["uid"] + "> " + message);
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.msglog_file);
                 string text = File.ReadAllText(path) + "\n[" + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt") + "] " + Context.Items["uid"] + "/" + user + ": " + message;
                 File.WriteAllText(path, text);
@@ -87,7 +87,7 @@ namespace ezchatv2.Hubs
                 }
             }
 
-            System.Diagnostics.Debug.WriteLine("login: username:" + user + ", connectionID:" + Context.ConnectionId + ", UID: " + uid);
+            Util.VerboseConsole("login: username:" + user + ", connectionID:" + Context.ConnectionId + ", UID: " + uid);
             Context.Items.Add("uid", uid);
             //System.Diagnostics.Debug.WriteLine(Context.Items["uid"]);
 
@@ -146,7 +146,7 @@ namespace ezchatv2.Hubs
             else if (ChatConfig.configTable["admin"]["useAdminAttribute"])
             { }
             else
-            { Context.Abort(); System.Diagnostics.Debug.WriteLine(uid + " was kicked as impostor admin"); return; }
+            { Context.Abort(); Util.VerboseConsole(uid + " was kicked as impostor admin"); return; }
 
 
             // usable types: ban unban banlist clearCache reloadConfig refreshAllClients changeMotd pauseChat stopChat
@@ -168,7 +168,7 @@ namespace ezchatv2.Hubs
 
                 await Clients.Client(bannedConID).SendAsync("ServerMsg", "reload", "", "SERVER");
 
-                System.Diagnostics.Debug.WriteLine(uid + " banned " + message);
+                Util.Print("[AD] " + uid + " banned " + message);
             }
             else if (type == "unban")
             {
@@ -185,7 +185,7 @@ namespace ezchatv2.Hubs
                 }
                 File.WriteAllText(path, banliststr);
 
-                System.Diagnostics.Debug.WriteLine(uid + " unbanned " + message);
+                Util.Print("[AD] " + uid + " unbanned " + message);
             }
             else if (type == "banlist")
             {
@@ -197,7 +197,10 @@ namespace ezchatv2.Hubs
                 {
                     banliststr += " " + i;
                 }
-                try { banliststr.Remove(0, 1); } catch { banliststr = "none"; }
+                if (!string.IsNullOrEmpty(banliststr))
+                { banliststr.Remove(0, 1); }
+                else
+                { banliststr = "none"; }
                 await Clients.Caller.SendAsync("AdminMsg", "banlist", banliststr, "SERVER");
             }
             else if (type == "clearCache")
@@ -223,11 +226,11 @@ namespace ezchatv2.Hubs
             else if (type == "pauseChat")
             {
                 ChatContext.paused = !ChatContext.paused;
-                Console.WriteLine(uid + " set pause to " + ChatContext.paused.ToString());
+                Util.Print("[AD] " + uid + " set pause to " + ChatContext.paused.ToString());
             }
             else if (type == "stopChat")
             {
-                Console.WriteLine(uid + " stopped EZchat @ " + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
+                Util.Print("[AD] " + uid + " stopped EZchat @ " + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
                 Environment.Exit(0);
             }
         }
@@ -237,7 +240,7 @@ namespace ezchatv2.Hubs
         public override Task OnConnectedAsync()
         {
             ChatContext.ConnectedIds.Add(Context.ConnectionId);
-            System.Diagnostics.Debug.WriteLine("total connected users: " + ChatContext.ConnectedIds.Count);
+            Util.VerboseConsole("total connected users: " + ChatContext.ConnectedIds.Count);
             return base.OnConnectedAsync();
         }
 
@@ -263,7 +266,7 @@ namespace ezchatv2.Hubs
             }
             Clients.All.SendAsync("ServerMsg", "clientList", clientListMsg, "SERVER");
 
-            System.Diagnostics.Debug.WriteLine("total connected users: " + ChatContext.ConnectedIds.Count);
+            Util.VerboseConsole("total connected users: " + ChatContext.ConnectedIds.Count);
             return base.OnDisconnectedAsync(exception);
         }
     }

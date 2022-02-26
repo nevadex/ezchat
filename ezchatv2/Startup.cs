@@ -12,6 +12,8 @@ using ezchatv2.Hubs;
 using Tommy;
 
 using System.IO;
+using LiteDB;
+using ezchatv2.Models;
 
 namespace ezchatv2
 {
@@ -21,8 +23,19 @@ namespace ezchatv2
         {
             Configuration = configuration;
 
-            Console.WriteLine("{0} started", ChatConfig.version);
-            Console.WriteLine("nevadex (c) 2022");
+            Util.Print(ChatConfig.version + " started");
+            Util.Print("nevadex (c) 2022");
+
+            // init fs db
+            if (!File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.configTable["fs"]["fsDirectory"], "fs.db")) && ChatConfig.configTable["fs"]["fileSystem"])
+            {
+                Util.Print("[FS] Creating database");
+                var db = new LiteDatabase(FSMethods.FSDBConStr());
+                var col = db.GetCollection<FS_FileRecord>("files");
+                var cursorcol = db.GetCollection<FS_DBCursor>("cursor");
+                var cursor = new FS_DBCursor() { bsonIndex=1, fileId=1 };
+                cursorcol.Insert(cursor);
+            }
         }
 
         public IConfiguration Configuration { get; }

@@ -299,12 +299,14 @@ document.getElementById("sendButton").addEventListener("click", async function (
 
     // check for files
     if (fs_pendingFiles.length > 0) {
-        for (let i = 0; i < fs_pendingFiles.length; i++) {
+        var initlen = fs_pendingFiles.length;
+        for (let i = initlen - 1; i > -1; i--) {
             await uploadFile(fs_pendingFiles[i].file, uid)
                 .then(object => {
                     connection.invoke("SendMessage", user, window.location.href + object["url"]);
                     document.getElementById("FC_" + fs_pendingFiles[i].fileName).remove();
                     fs_pendingFiles.splice(i, 1);
+                    console.log(i);
                 })
         }
     }
