@@ -96,6 +96,7 @@ if (userCookie != null) {
 }
 else {
     userCookie = c_defaultUsername; // default username
+    document.getElementById("userInput").value = c_defaultUsername;
     document.getElementById("userInput").focus();
 }
 

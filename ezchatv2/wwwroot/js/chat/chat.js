@@ -34,7 +34,6 @@ connection.on("ReceiveMessage", function (user, message, uid) {
     //li.title = "Sender UID: " + uid;
     li.dataset.uid = uid;
     li.dataset.user = user;
-    li.dataset.raw = message
     // dont change, could allow script injection
     //li.textContent = `<${user}> ${message}`;
 
@@ -154,8 +153,9 @@ connection.on("ReceiveMessage", function (user, message, uid) {
 
     if (hasFiles) {
         li.appendChild(fileRenderer);
+        li.dataset.files = li.lastChild.innerHTML;
     }
-    li.dataset.raw = li.innerHTML
+    li.dataset.msgSections = JSON.stringify(msgSections);
     document.getElementById("messagesList").appendChild(li);
     //li.textContent = `<${checkedUser}> ${checkedMessage}`;
 });
@@ -319,44 +319,88 @@ document.getElementById("sendButton").addEventListener("click", async function (
     document.getElementById("messageInput").focus();
 });
 
-// filter mode toggle thing
-document.getElementById("filterMode").addEventListener("click", function (event) {
-    if (document.getElementById("filterMode").checked == true) {
-        var x = document.querySelectorAll("li");
-
-        for (let i = 0; i < x.length; i++) {
-            x[i].textContent = pf_filter(x[i].textContent);
-        }
-    }
-    else {
-        var x = document.querySelectorAll("li");
-
-        for (let i = 0; i < x.length; i++) {
-            if (document.getElementById("showUidsMode").checked == true) {
-                x[i].textContent = "<" + x[i].dataset.uid + "/" + x[i].dataset.user + "> " + x[i].dataset.raw;
-            }
-            else {
-                x[i].textContent = "<" + x[i].dataset.user + "> " + x[i].dataset.raw;
-            }
-        }
-    }
-});
-
 // show uids mode toggle thing
-// little bit buggy with pf
 document.getElementById("showUidsMode").addEventListener("click", function (event) {
     if (document.getElementById("showUidsMode").checked == true) {
         var x = document.querySelectorAll("li");
 
         for (let i = 0; i < x.length; i++) {
-            x[i].textContent = x[i].textContent.replace(x[i].dataset.user, x[i].dataset.uid + "/" + x[i].dataset.user);
+            var msgSections = JSON.parse(x[i].dataset.msgSections);
+            var usersection = "";
+            if (document.getElementById("filterMode").checked == true) {
+                usersection = `<${x[i].dataset.uid}/${pf_filter(x[i].dataset.user)}> `;
+                for (let i = 0; i < msgSections.length; i++) {
+                    if (msgSections[i].isLink == false) {
+                        msgSections[i].text = pf_filter(msgSections[i].text);
+                    }
+                }
+            } else {
+                usersection = `<${x[i].dataset.uid}/${x[i].dataset.user}> `;
+            }
+
+            x[i].innerHTML = "";
+            x[i].innerText = usersection;
+            for (let ii = 0; ii < msgSections.length; ii++) {
+                if (msgSections[ii].isLink) {
+                    var a = document.createElement("a");
+                    a.href = `${msgSections[ii].text}`;
+                    a.innerHTML = `${msgSections[ii].text}`;
+                    a.target = "_blank";
+                    x[i].appendChild(a);
+                    if ((msgSections.length - 1) > ii) {
+                        x[i].innerHTML = x[i].innerHTML + " ";
+                    }
+                } else {
+                    x[i].innerHTML = x[i].innerHTML + `${msgSections[ii].text} `;
+                }
+            }
+
+            if (x[i].dataset.files != null) {
+                var fileRender = document.createElement("div");
+                fileRender.innerHTML = x[i].dataset.files;
+                x[i].appendChild(fileRender);
+            }
         }
     }
     else {
         var x = document.querySelectorAll("li");
 
         for (let i = 0; i < x.length; i++) {
-            x[i].textContent = x[i].textContent.replace(x[i].dataset.uid + "/" + x[i].dataset.user, x[i].dataset.user);
+            var msgSections = JSON.parse(x[i].dataset.msgSections);
+            var usersection = "";
+            if (document.getElementById("filterMode").checked == true) {
+                usersection = `<${pf_filter(x[i].dataset.user)}> `;
+                for (let i = 0; i < msgSections.length; i++) {
+                    if (msgSections[i].isLink == false) {
+                        msgSections[i].text = pf_filter(msgSections[i].text);
+                    }
+                }
+            } else {
+                usersection = `<${x[i].dataset.user}> `;
+            }
+
+            x[i].innerHTML = "";
+            x[i].innerText = usersection;
+            for (let ii = 0; ii < msgSections.length; ii++) {
+                if (msgSections[ii].isLink) {
+                    var a = document.createElement("a");
+                    a.href = `${msgSections[ii].text}`;
+                    a.innerHTML = `${msgSections[ii].text}`;
+                    a.target = "_blank";
+                    x[i].appendChild(a);
+                    if ((msgSections.length - 1) > ii) {
+                        x[i].innerHTML = x[i].innerHTML + " ";
+                    }
+                } else {
+                    x[i].innerHTML = x[i].innerHTML + `${msgSections[ii].text} `;
+                }
+            }
+
+            if (x[i].dataset.files != null) {
+                var fileRender = document.createElement("div");
+                fileRender.innerHTML = x[i].dataset.files;
+                x[i].appendChild(fileRender);
+            }
         }
     }
 });
@@ -370,4 +414,33 @@ document.getElementById("clearMsgList").addEventListener("click", function (even
 
 document.getElementById("conState").addEventListener("click", function (event) {
     refreshConnectionState();
+});
+
+// color theme toggle
+document.getElementById("darkMode").addEventListener("click", function (event) {
+    if (document.getElementById("darkMode").checked == true) {
+        document.getElementById("mainBody").classList.remove("bootstrap");
+        document.getElementById("mainBody").classList.add("bootstrap-dark");
+    }
+    else {
+        document.getElementById("mainBody").classList.remove("bootstrap-dark");
+        document.getElementById("mainBody").classList.add("bootstrap");
+    }
+});
+
+// save settings in local storage
+document.getElementById("settingsModalCloseButton").addEventListener("click", function (event) {
+    refreshConnectionState();
+    localStorage.setItem("ttsMode", document.getElementById("ttsMode").checked.toString());
+    localStorage.setItem("filterMode", document.getElementById("filterMode").checked.toString());
+    localStorage.setItem("showUidsMode", document.getElementById("showUidsMode").checked.toString());
+    if (isAdmin == true) {
+        localStorage.setItem("showAdminMode", document.getElementById("showAdminMode").checked.toString());
+    }
+    localStorage.setItem("darkMode", document.getElementById("darkMode").checked.toString());
+});
+
+// background functions
+document.getElementById("uploadFileManualTrigger").addEventListener("click", function (event) {
+    document.getElementById("uploadFileManual").click();
 });
