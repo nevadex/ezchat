@@ -1,4 +1,2 @@
-﻿"use strict";
-
-// ezchat v2.8 / site
+﻿// ezchat v2.8
 // made by nevadex (c) 2022

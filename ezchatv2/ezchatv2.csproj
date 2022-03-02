@@ -28,7 +28,7 @@
     <None Update="admin\config.toml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="filesystem\none.none">
+    <None Update="filesystem\none.ezfs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

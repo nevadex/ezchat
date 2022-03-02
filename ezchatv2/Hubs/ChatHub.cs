@@ -146,7 +146,7 @@ namespace ezchatv2.Hubs
             else if (ChatConfig.configTable["admin"]["useAdminAttribute"])
             { }
             else
-            { Context.Abort(); Util.VerboseConsole(uid + " was kicked as impostor admin"); return; }
+            { Context.Abort(); Util.VerboseConsole("[AD]" + uid + " was kicked as impostor admin"); return; }
 
 
             // usable types: ban unban banlist clearCache reloadConfig refreshAllClients changeMotd pauseChat stopChat

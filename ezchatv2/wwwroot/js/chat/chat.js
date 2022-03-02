@@ -306,7 +306,6 @@ document.getElementById("sendButton").addEventListener("click", async function (
                     connection.invoke("SendMessage", user, window.location.href + object["url"]);
                     document.getElementById("FC_" + fs_pendingFiles[i].fileName).remove();
                     fs_pendingFiles.splice(i, 1);
-                    console.log(i);
                 })
         }
     }
