@@ -5,8 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+    <Content Remove="wwwroot\js\site.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="admin\banlist.txt" />
     <None Remove="admin\msglog.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\site.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +25,11 @@
     <Content Include="admin\msglog.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
+    <None Include="wwwroot\js\site.min.js" />
   </ItemGroup>
 
   <ItemGroup>
