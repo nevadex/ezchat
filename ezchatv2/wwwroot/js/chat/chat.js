@@ -29,13 +29,19 @@ class MsgTextSel {
     }
 }
 
-connection.on("ReceiveMessage", function (user, message, uid) {
+connection.on("ReceiveMessage", function (user, rawmessage, uid) {
     var li = document.createElement("li");
     //li.title = "Sender UID: " + uid;
     li.dataset.uid = uid;
     li.dataset.user = user;
     // dont change, could allow script injection
     //li.textContent = `<${user}> ${message}`;
+
+    // primary filters
+    var message;
+    let localHref = new RegExp("<window.location.href>", "img");
+    message = rawmessage.replaceAll(localHref, window.location.href);
+
 
     var checkedUser = user;
     var checkedMessage = message;
@@ -62,6 +68,8 @@ connection.on("ReceiveMessage", function (user, message, uid) {
         }
         validator.remove();
     }
+
+    li.dataset.msgSections = JSON.stringify(msgSections);
 
     if (document.getElementById("filterMode").checked == true) {
         checkedUser = pf_filter(checkedUser);
@@ -155,7 +163,7 @@ connection.on("ReceiveMessage", function (user, message, uid) {
         li.appendChild(fileRenderer);
         li.dataset.files = li.lastChild.innerHTML;
     }
-    li.dataset.msgSections = JSON.stringify(msgSections);
+    
     document.getElementById("messagesList").appendChild(li);
     //li.textContent = `<${checkedUser}> ${checkedMessage}`;
 });
@@ -303,7 +311,7 @@ document.getElementById("sendButton").addEventListener("click", async function (
         for (let i = initlen - 1; i > -1; i--) {
             await uploadFile(fs_pendingFiles[i].file, uid)
                 .then(object => {
-                    connection.invoke("SendMessage", user, window.location.href + object["url"]);
+                    connection.invoke("SendMessage", user, "<window.location.href>" + object["url"]);
                     document.getElementById("FC_" + fs_pendingFiles[i].fileName).remove();
                     fs_pendingFiles.splice(i, 1);
                 })

@@ -62,6 +62,11 @@ document.getElementById("admin-clearCache").addEventListener("click", function (
     // auto
     connection.invoke("AdminMsg", "clearCache", "", uid);
 });
+document.getElementById("admin-resetFS").addEventListener("click", function (event) {
+    refreshConnectionState();
+    // auto
+    connection.invoke("AdminMsg", "resetFS", "", uid);
+});
 document.getElementById("admin-reloadConfig").addEventListener("click", function (event) {
     refreshConnectionState();
     // auto
@@ -129,9 +134,11 @@ document.getElementById("toggleOptions").addEventListener("click", function (eve
     refreshConnectionState(); // refresh    
     if (isAdmin == true) {
         document.getElementById("showAdminDiv").style.display = "initial";
+        document.getElementById("showAdminDivBr").style.display = "initial";
     }
     else {
         document.getElementById("showAdminDiv").style.display = "none";
+        document.getElementById("showAdminDivBr").style.display = "none";
     }
 });
 

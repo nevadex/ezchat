@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using System.IO;
 
+using ezchatv2.Models;
 using Tommy;
 
 namespace ezchatv2.Hubs
@@ -149,9 +150,10 @@ namespace ezchatv2.Hubs
             { Context.Abort(); Util.VerboseConsole("[AD]" + uid + " was kicked as impostor admin"); return; }
 
 
-            // usable types: ban unban banlist clearCache reloadConfig refreshAllClients changeMotd pauseChat stopChat
+            // usable types: ban unban banlist clearCache reloadConfig refreshAllClients changeMotd pauseChat stopChat clearFS
             if (type == "ban")
             {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
                 string text = File.ReadAllText(path) + "\n" + message;
                 File.WriteAllText(path, text);
@@ -172,6 +174,7 @@ namespace ezchatv2.Hubs
             }
             else if (type == "unban")
             {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
                 List<string> banlist = File.ReadAllText(path).Split("\n").ToList<string>();
                 banlist.Remove(banlist[0]);
@@ -189,6 +192,7 @@ namespace ezchatv2.Hubs
             }
             else if (type == "banlist")
             {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
                 string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.banlist_file);
                 List<string> banlist = File.ReadAllText(path).Split("\n").ToList<string>();
                 banlist.Remove(banlist[0]);
@@ -205,6 +209,7 @@ namespace ezchatv2.Hubs
             }
             else if (type == "clearCache")
             {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
                 while (ChatContext.recentMsgs.Count != 0)
                 {
                     ChatContext.recentMsgs.RemoveAt(0);
@@ -212,26 +217,36 @@ namespace ezchatv2.Hubs
             }
             else if (type == "reloadConfig")
             {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
                 StreamReader tomlreader = File.OpenText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.config_file));
                 ChatConfig.configTable = TOML.Parse(tomlreader);
             }
             else if (type == "refreshAllClients")
             {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
                 await Clients.All.SendAsync("ServerMsg", "reload", "", "SERVER");
             }
             else if (type == "changeMotd")
             {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
                 ChatConfig.configTable["basic"]["motd"] = message;
             }
             else if (type == "pauseChat")
             {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
                 ChatContext.paused = !ChatContext.paused;
                 Util.Print("[AD] " + uid + " set pause to " + ChatContext.paused.ToString());
             }
             else if (type == "stopChat")
             {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
                 Util.Print("[AD] " + uid + " stopped EZchat @ " + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
                 Environment.Exit(0);
+            }
+            else if (type == "resetFS")
+            {
+                Util.VerboseConsole("[AD] [" + uid + "] triggered [" + type + "]");
+                FSMethods.ResetFS(ExitAfter: false);
             }
         }
 

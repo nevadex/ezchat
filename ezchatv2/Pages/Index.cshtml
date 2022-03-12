@@ -22,11 +22,14 @@
                 document.body.appendChild(overlay);
             }
         });
+
+        const overlayRefreshTimeout = setTimeout(() => { $("#loadingOverlayRefresh").fadeIn();}, 1500)
     </script>
 </head>
 
 <div class="loading-overlay" id="loadingOverlay" style="background-color: #224848;">
     <img id="loadingOverlayImg" src="~/assets/ezchat_logo_dark.jpg" alt="ezchat is loading" style="position:absolute; top:0; bottom:0; left:0; right:0; margin:auto; width:15%;" />
+    <input id="loadingOverlayRefresh" onclick="window.location.reload();" type="button" class="btn btn-dark" style="display:none;position:absolute;bottom: 0;left:0;right:0;margin:auto;height: fit-content;width: fit-content;margin-bottom: 3px;" value="Refresh">
     <p style="position: absolute; bottom: 0; left: 10px; margin: auto;">@ViewData["version"] &copy; Nevadex 2022</p>
     <p style="position: absolute; bottom: 0; right: 10px; margin: auto;">loading..</p>
 </div>
@@ -66,6 +69,7 @@
     <input type="button" class="btn btn-outline-info btn-sm" id="admin-refreshAllClients" value="Refresh All Clients" />
     <input type="button" class="btn btn-outline-info btn-sm" id="admin-changeMotd" value="Change MOTD" />
     <input type="button" class="btn btn-outline-warning btn-sm" id="admin-clearCache" value="Clear Msg Cache" />
+    <input type="button" class="btn btn-outline-warning btn-sm" id="admin-resetFS" value="Reset Filesystem" />
     <input type="button" class="btn btn-warning btn-sm" id="admin-pauseChat" value="Pause Chat" />
     <input type="button" class="btn btn-danger btn-sm" id="admin-stopChat" value="Stop Chat" />
 
@@ -113,7 +117,7 @@
                                         <label class="custom-control-label" for="showAdminMode">Admin Panel</label>
                                     </div>
                                 </div>
-                                <div class="row"><br /></div>
+                                <div class="row" id="showAdminDivBr" style=""><br /></div>
                                 <div class="row">
                                     <div class="custom-control custom-switch" id="darkModeDiv">
                                         <input type="checkbox" class="custom-control-input" id="darkMode">

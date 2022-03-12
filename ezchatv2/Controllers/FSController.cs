@@ -101,7 +101,7 @@ namespace ezchatv2.Controllers
                         record.displayName = record.displayName.Replace(" ", "_");
                         if (!ChatConfig.configTable["fs"]["secureFileNames"])
                         {
-                            record.fileName = record.displayName;
+                            record.fileName = record.fileId + "_" + record.displayName;
                         }
                         else
                         {
@@ -156,12 +156,13 @@ namespace ezchatv2.Controllers
                         record.displayName = record.displayName.Replace(" ", "_");
                         if (!ChatConfig.configTable["fs"]["secureFileNames"])
                         {
-                            record.fileName = record.displayName;
+                            record.fileName = record.fileId + "_" + record.displayName;
                         }
                         else
                         {
                             record.fileName = record.fileId + record.fileExt + ".ezfs";
                         }
+
                         // delete old file
                         var oldrecord = col.FindById(cursorRN.bsonIndex);
                         var oldpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.configTable["fs"]["fsDirectory"], oldrecord.fileName);

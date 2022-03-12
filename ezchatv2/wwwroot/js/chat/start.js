@@ -60,6 +60,7 @@ async function asyncInit() {
         init_time = init_time.toFixed(1);
         console.log(`[INIT] done! took ${init_time} ms`);
 
+        clearTimeout(overlayRefreshTimeout);
         $("#loadingOverlay").fadeOut();
     }).catch(function (err) {
         return console.error(err.toString());

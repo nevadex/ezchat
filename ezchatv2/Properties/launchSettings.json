@@ -12,7 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Developmenta"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "ezchatv2": {

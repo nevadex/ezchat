@@ -1,0 +1,29 @@
+﻿Item,Description,Valid Data Type,Default Value
+siteName,Sets the name at the top of the website.,String,EZchat v2.8
+siteTitle,Sets the title of the website in the tab,String,Ezchat
+motd,"Sets the message of the day, under the name.<br>Leave empty to remove.",String,Have a wonderful day!
+escapeLink,Sets the link of the Escape button next to the name.<br>Leave empty to remove.,String (link),https://google.com
+recentMsgs,Sets how many recent messages to load on connection.<br>Set to 0 to load none.,Integer,20
+userCharLimit,Sets username length limit,Integer,20
+messageCharLimit,Sets message length limit,Integer,200
+,,,
+Item,Description,Valid Data Type,Default Value
+fileSystem,Enables or disables the file system,Boolean,TRUE
+filterFileExts,Toggles the advanced filter which only allows extensions from allowedFileExts,Boolean,FALSE
+allowedFileExts,File extensions to accept when filterFileExts is enabled,String array,…
+blockedFileExts,File extensions to block no matter the value of filterFileExts,String array,"["".exe"", "".php"", """", "".bin""]"
+autoDisplayImages,Display images and video on client,Boolean,TRUE
+fsDirectory,Location to store files and database.<br>**REMOVE EXECUTION PERMS FROM THIS FOLDER**,String,filesystem
+fileSizeLimit,Size limit for files in MB. Set to 0 to remove limit.<br>(Logic limit of 2.14GB),Integer,8
+maxFiles,Sets maximum number of stored files before they are overwritten.,Integer,20
+secureFileNames,Write files to secure names rather than the user-picked name.,Boolean,FALSE
+,,,
+Item,Description,Valid Data Type,Default Value
+adminUids,Sets the UIDs of admins on EZchat.,String Array,…
+useAdminAttribute,Decides if using the ?admin=true attribute to provide admin.<br>**SECURITY VULNERABILITY**,Boolean,FALSE
+,,,
+Item,Description,Valid Data Type,Default Value
+ports,Sets the hosting ports of EZchat.,Integer Array,"[80, 443]"
+addr,Sets the hosting address of EZchat.,String,0.0.0.0
+msglog,Message log file location,String,admin/msglog.txt
+banlist,Banlist file location,String,admin/banlist.txt

@@ -42,6 +42,7 @@ namespace ezchatv2.Models
         public string fileName { get; set; } // stored file name, changed in config opt "secureFileNames"
         // format: regular=displayName.fileExt secure=fileId.fileExt.ezfs
         public string fileExt { get; set; } // file extension
+        public bool spoiler { get; set; } // spoiler
 
         public FS_FileRecord(string fileDisplayName, string uploaderUID)
         {
@@ -49,6 +50,7 @@ namespace ezchatv2.Models
             uploadTime = DateTime.Now;    
             fileExt = FSMethods.GetFileExtension(fileDisplayName);
             displayName = fileDisplayName;
+            spoiler = false;
         }
     }
 
@@ -107,7 +109,7 @@ namespace ezchatv2.Models
             return "Filename=" + AppDomain.CurrentDomain.BaseDirectory + ChatConfig.configTable["fs"]["fsDirectory"] + "/fs.db;Connection=Shared";
         }
 
-        public static void ResetFS()
+        public static void ResetFS(bool ExitAfter = true)
         {
             if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ChatConfig.configTable["fs"]["fsDirectory"], "fs.db")))
             {
@@ -129,8 +131,15 @@ namespace ezchatv2.Models
                 var cursor = new FS_DBCursor() { bsonIndex = 1, fileId = 1 };
                 cursorcol.Insert(cursor);
 
-                Util.Print("[FS] Done, exiting");
-                Environment.Exit(0);
+                if (ExitAfter)
+                {
+                    Util.Print("[FS] Done, exiting");
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Util.Print("[FS] Done, continuing");
+                }
             }
             else
             {
