@@ -27,3 +27,15 @@ ports,Sets the hosting ports of EZchat.,Integer Array,"[80, 443]"
 addr,Sets the hosting address of EZchat.,String,0.0.0.0
 msglog,Message log file location,String,admin/msglog.txt
 banlist,Banlist file location,String,admin/banlist.txt
+,,,
+Item,Description,,
+Refresh,Refresh banlist,,
+Reconnect,Reconnect to server without login<br>**DEPRECATED**,,
+Ban,Ban UID in text box,,
+Unban,Unban UID in text box,,
+Clear Msg Cache,Clear recent message cache,,
+Reload Config,Reload configuration file on host.<br>Will not change banlist and msglog files.,,
+Refresh All Clients,Refresh all clients,,
+Change MOTD,Change MOTD in current instance.<br>Will not edit file for security.,,
+Pause Chat,Temporarily pause message sending in the chat.<br>Click again to unpause.,,
+Stop Chat,Stop current instance of EZchat.,,

@@ -87,3 +87,8 @@ div.loading-overlay {
 .bootstrap-dark a {
     color: #0366d6;
 }
+
+/* fixed header/footer, apply to inner container */
+.fixed-container-hf {
+    max-width: 100%;
+}

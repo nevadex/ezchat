@@ -39,8 +39,8 @@ connection.on("ReceiveMessage", function (user, rawmessage, uid) {
 
     // primary filters
     var message;
-    let localHref = new RegExp("<window.location.href>", "img");
-    message = rawmessage.replaceAll(localHref, window.location.href);
+    let localHref = new RegExp("<window.location.origin>", "img");
+    message = rawmessage.replaceAll(localHref, window.location.origin+"/");
 
 
     var checkedUser = user;
@@ -311,7 +311,7 @@ document.getElementById("sendButton").addEventListener("click", async function (
         for (let i = initlen - 1; i > -1; i--) {
             await uploadFile(fs_pendingFiles[i].file, uid)
                 .then(object => {
-                    connection.invoke("SendMessage", user, "<window.location.href>" + object["url"]);
+                    connection.invoke("SendMessage", user, "<window.location.origin>" + object["url"]);
                     document.getElementById("FC_" + fs_pendingFiles[i].fileName).remove();
                     fs_pendingFiles.splice(i, 1);
                 })

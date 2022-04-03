@@ -17,7 +17,7 @@
 <body class="bootstrap" id="mainBody" ondrop="uploadFileHandler(event);" ondragover="dragOverHandler(event);">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-themed border-bottom box-shadow mb-3">
-            <div class="container">
+            <div class="fixed-container-hf container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">@ViewData["siteName"]</a>
                 <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="fixed-container-hf container">
             @ViewData["version"] &copy; Nevadex 2022 - <a href="https://github.com/nevadex/ezchat" target="_blank">Github</a> - <a asp-area="" asp-page="/License">License</a>
         </div>
     </footer>
